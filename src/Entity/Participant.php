@@ -164,18 +164,18 @@ class Participant
         return $this->sorties;
     }
 
-    public function addSorty(Sortie $sorty): static
+    public function addSorties(Sortie $sorties): static
     {
-        if (!$this->sorties->contains($sorty)) {
-            $this->sorties->add($sorty);
+        if (!$this->sorties->contains($sorties)) {
+            $this->sorties->add($sorties);
         }
 
         return $this;
     }
 
-    public function removeSorty(Sortie $sorty): static
+    public function removeSorties(Sortie $sorties): static
     {
-        $this->sorties->removeElement($sorty);
+        $this->sorties->removeElement($sorties);
 
         return $this;
     }

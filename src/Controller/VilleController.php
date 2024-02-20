@@ -14,9 +14,16 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/ville')]
 class VilleController extends AbstractController
 {
-    #[Route('/', name: 'app_ville_index', methods: ['GET'])]
-    public function index(VilleRepository $villeRepository): Response
+    #[Route('/', name: 'app_ville_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, VilleRepository $villeRepository): Response
     {
+        $text = $request->request->get('ville');
+        if ($text != "") {
+            $villes = $villeRepository->findByText($text);
+            return $this->render('ville/index.html.twig', [
+                'villes' => $villes,
+            ]);
+        }
         return $this->render('ville/index.html.twig', [
             'villes' => $villeRepository->findAll(),
         ]);
@@ -39,14 +46,6 @@ class VilleController extends AbstractController
         return $this->render('ville/new.html.twig', [
             'ville' => $ville,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_ville_show', methods: ['GET'])]
-    public function show(Ville $ville): Response
-    {
-        return $this->render('ville/show.html.twig', [
-            'ville' => $ville,
         ]);
     }
 

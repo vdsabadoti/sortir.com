@@ -3,47 +3,71 @@
 {% block title %}Site index{% endblock %}
 
 {% block body %}
-    <h1 class="mb-2 text-4xl text-center font-bold tracking-tight text-gray-900 dark:text-white">Gérer les sites</h1>
+    <div class="container mx-auto grid grid-rows-6 gap-4 flex items-center">
+
+        <div class="row-start-1 mx-auto self-auto">
+            <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Gérer les sites</h1>
+        </div>
 
 
-<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-    <h2>Filtrer les sites</h2>
-    <form action="{{ path('app_site_filter') }}">
-        <table>
-            <tr>
-                <td><label for="site">Le nom contient :</label></td>
-                <td><input id="site" name="site" type="text"></td>
-                <td><button type="submit">Rechercher</button></td>
-            </tr>
-        </table>
+        <div class="row-span-3 grid-rows-subgrid w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
+            <div class="row-start-2">
+            <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les sites</h2>
+            </div>
+                <form action="{{ path('app_site_index') }}" method="post">
+                    <div class="row-start-3">
+                        <label for="site">Contient :</label>
+                        <input id="site" name="site" type="text">
+                    </div>
+                    <div class="row-start-4">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
+                    </div>
+                </form>
+        </div>
 
-    </form>
-</div>
 
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">Nom</th>
-                <th scope="col" class="px-6 py-3">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for site in sites %}
-                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                    <td class="px-6 py-4">{{ site.nom }}</td>
-                    <td class="px-6 py-4">
-                        <a href="{{ path('app_site_show', {'id': site.id}) }}">Modifier</a> -
-                        <a href="{{ path('app_site_edit', {'id': site.id}) }}">Supprimer</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="row-start-5 row-end-6 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex items-center">
+                <table class="w-full sm:w-1/2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Nom</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
+                        <th scope="col" class="px-6 py-3"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for site in sites %}
+                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <td class="px-6 py-4">{{ site.nom }}</td>
+                            <td class="px-6 py-4">
+                                <a href="{{ path('app_site_edit', {'id': site.id}) }}">Modifier</a>
+                            </td>
+                            <td>
+                                {{ include('site/_delete_form.html.twig') }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="px-10">Aucun site trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-left pt-3">
+
+                    <a class="px-6" href="{{ path('app_site_new') }}">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Créer
+                        </button>
+                    </a>
+
+            </div>
+
+        </div>
+
     </div>
-       <a href="{{ path('app_site_new') }}">Create new</a>
+
 {% endblock %}

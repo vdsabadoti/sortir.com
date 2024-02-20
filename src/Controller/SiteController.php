@@ -14,9 +14,16 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/site')]
 class SiteController extends AbstractController
 {
-    #[Route('/', name: 'app_site_index', methods: ['GET'])]
-    public function index(SiteRepository $siteRepository): Response
+    #[Route('/', name: 'app_site_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, SiteRepository $siteRepository): Response
     {
+        $text = $request->request->get('site');
+        if ($text != "") {
+            $sites = $siteRepository->findByText($text);
+            return $this->render('site/index.html.twig', [
+                'sites' => $sites,
+            ]);
+        }
         return $this->render('site/index.html.twig', [
             'sites' => $siteRepository->findAll(),
         ]);
@@ -42,26 +49,6 @@ class SiteController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_site_show', methods: ['GET'])]
-    public function show(Site $site): Response
-    {
-        return $this->render('site/show.html.twig', [
-            'site' => $site,
-        ]);
-    }
-
-    #[Route('/filter', name: 'app_site_filter', methods: ['pOST'])]
-    public function showFilteredSites(Request $request, SiteRepository $siteRepository): Response
-    {
-        $text = $request->query->get('site');
-        dd($text);
-        $site = $siteRepository->findByText($text);
-
-        return $this->render('site/index.html.twig', [
-            'site' => $site,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_site_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Site $site, EntityManagerInterface $entityManager): Response
     {
@@ -80,7 +67,7 @@ class SiteController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_site_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_site_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, Site $site, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->request->get('_token'))) {

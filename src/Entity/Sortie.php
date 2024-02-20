@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
@@ -26,11 +27,11 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Vous devez mettre un nom')]
+    #[Assert\NotBlank()]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today UTC', message: 'La date de debut doit etre supérieure a aujourd\'hui')]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(nullable: true)]
@@ -38,8 +39,7 @@ class Sortie
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\LessThan(propertyPath: 'dateHeureDebut', message: 'la date limite d\' insctiption doit etre inférieure a la date de debuts')]
-    #[Assert\GreaterThan('today UTC', message: ' La date d\'inscription doit etre supérieure a aujourd\'hui')]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column(nullable: true)]

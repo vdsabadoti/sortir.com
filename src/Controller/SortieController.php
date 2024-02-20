@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +17,7 @@ class SortieController extends AbstractController
 {
 
     #[Route('/sortie/creer', name:'app_sortie_create')]
-    public function creerSortie(EntityManagerInterface $em, Request $request) : Response
+    public function creerSortie(EntityManagerInterface $em, Request $request, ParticipantRepository $p, EtatRepository $e) : Response
     {
 
         $sortie = new Sortie();
@@ -24,12 +26,29 @@ class SortieController extends AbstractController
 
         $form->handleRequest($request);
 
+
+
         if($form->isSubmitted() && $form->isValid())
         {
-            $em->persist($sortie->getLieu());
-            $em->flush();
-            $em->persist($sortie);
-            $em->flush();
+
+
+            $em->beginTransaction();
+            try {
+                //$this->getUser()->getId();
+                $sortie->setOrganisateur($p->find(1));
+                $sortie->setEtat($e->find(1));
+                $em->persist($sortie->getLieu());
+                $em->flush();
+                $em->persist($sortie);
+                $em->flush();
+
+                $em->commit();
+            } catch (\Exception $e) {
+                $em->rollBack();
+                // Gérez l'exception
+            }
+
+
 
             return $this->redirectToRoute('app_home');
         }

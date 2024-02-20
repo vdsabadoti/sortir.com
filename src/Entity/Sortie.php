@@ -10,6 +10,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(
+    fields: ['organisateur', 'dateHeureDebut', ],
+    message: 'Vous ne pouvez pas créer deux fois une meme sortie a la meme date',
+)]
 #[ORM\EntityListeners([SortieListener::class])]
 class Sortie
 {
@@ -19,15 +24,18 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column(nullable: true)]
@@ -36,6 +44,12 @@ class Sortie
     #[ORM\Column(length: 511, nullable: true)]
     private ?string $infosSortie = null;
 
+    #[ORM\ManyToOne(inversedBy: 'sortiesOrganisees')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Participant $organisateur = null;
+
+    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'sorties')]
+    private Collection $participants;
 
     #[ORM\ManyToOne(inversedBy: 'sorties')]
     private ?Site $site = null;
@@ -47,18 +61,10 @@ class Sortie
     #[ORM\ManyToOne(inversedBy: 'sorties')]
     private ?Lieu $lieu = null;
 
-    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'sorties')]
-    private Collection $participants;
-
-    #[ORM\ManyToOne(inversedBy: 'sortiesOrganisees')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Participant $organisateur = null;
-
     public function __construct()
     {
         $this->participants = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -137,6 +143,44 @@ class Sortie
         return $this;
     }
 
+    public function getOrganisateur(): ?Participant
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Participant $organisateur): static
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+            $participant->addSorty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): static
+    {
+        if ($this->participants->removeElement($participant)) {
+            $participant->removeSorty($this);
+        }
+
+        return $this;
+    }
 
     public function getSite(): ?Site
     {
@@ -170,45 +214,6 @@ class Sortie
     public function setLieu(?Lieu $lieu): static
     {
         $this->lieu = $lieu;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
-
-    public function addParticipant(Participant $participant): static
-    {
-        if (!$this->participants->contains($participant)) {
-            $this->participants->add($participant);
-            $participant->addSortie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipant(Participant $participant): static
-    {
-        if ($this->participants->removeElement($participant)) {
-            $participant->removeSortie($this);
-        }
-
-        return $this;
-    }
-
-    public function getOrganisateur(): ?Participant
-    {
-        return $this->organisateur;
-    }
-
-    public function setOrganisateur(?Participant $organisateur): static
-    {
-        $this->organisateur = $organisateur;
 
         return $this;
     }

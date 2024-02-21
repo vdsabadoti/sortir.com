@@ -10,21 +10,21 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SortieController extends AbstractController
 {
-    #[Route('/sorties', name: 'app_sorties')]
+    #[Route('/', name: 'app_home')]
     public function index(SortieRepository $sortieRepository): Response
     {
         $sorties = $sortieRepository->findAll();
 
-        return $this->render('sortieList.html.twig', [
+        return $this->render('sortie/sortieList.html.twig', [
             'sorties' => $sorties,
         ]);
     }
-    #[Route('/sorties/{site}', name: 'app_sorties_par_sites',defaults: ['site'=> 'Rennes'])]
-    public function sortiesBySite(?string $nomSite ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
+    #[Route('/{site}', name: 'app_sorties_par_sites',defaults: ['site'=> 'Rennes'])]
+    public function sortiesBySite(?string $site ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
-        $sorties = $sortieRepository->findSortiesBySite($siteRepository->findSiteByNom($nomSite));
+        $sorties = $sortieRepository->findBy([ 'site' => $siteRepository->findOneBy(['nom' => $site])]);
 
-        return $this->render('sortieList.html.twig', [
+        return $this->render('sortie/sortieList.html.twig', [
             'sorties' => $sorties,
         ]);
     }

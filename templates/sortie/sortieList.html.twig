@@ -27,12 +27,12 @@
                         {% for sortie in sorties %}
                             <tr class="border-b dark:border-gray-700">
                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ sortie.nom }}</th>
-                                <td class="px-4 py-3">{{ sortie.dateHeureDebut }}</td>
-                                <td class="px-4 py-3">{{ sortie.dateLimiteInscription }}</td>
+                                <td class="px-4 py-3">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
+                                <td class="px-4 py-3">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
                                 <td class="px-4 py-3">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
                                 <td class="px-4 py-3">{{ sortie.etat.libelle }}</td>
                                 <td class="px-4 py-3">est ce que je suis inscrit</td>
-                                <td class="px-4 py-3">{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom|slice(0, 1) }}</td>
+                                <td class="px-4 py-3">{{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}</td>
                                 <td class="px-4 py-3">actions disponible</td>
                             </tr>
                         {% endfor %}

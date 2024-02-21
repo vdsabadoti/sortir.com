@@ -86,6 +86,7 @@ class SortiesService
         $this->em->flush();
     }
 
+    //Verifie si le participant est l'organisateur de la sortie
     private function estOrganisateur(Sortie $sortie, Participant $participant) : bool {
         return ($sortie->getOrganisateur()->getId() == $participant->getId());
     }

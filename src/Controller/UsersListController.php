@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Participant;
+use App\Form\RegistrationFormType;
+use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class UsersListController extends AbstractController
+{
+    #[Route('/users/list', name: 'app_users_list')]
+    public function user(ParticipantRepository $participantRepository): Response
+    {
+        return $this->render('users_list/index.html.twig', [
+            'users' => $participantRepository->findAll(),
+        ]);
+    }
+
+
+#[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+{
+    $form = $this->createForm(RegistrationFormType::class, $participant);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('users_list/edit.html.twig', [
+        'user' => $participant,
+        'form' => $form,
+    ]);
+
+}
+
+
+    #[Route('/delete/{id}', name: 'app_user_delete', methods: ['POST'])]
+    public function delete(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->request->get('_token'))) {
+
+            $participant->setRoles(['ROLE_ADMIN']);
+
+            $entityManager->remove($participant);
+            $entityManager->flush();
+
+
+        }
+
+        return $this->redirectToRoute('app_users_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+}

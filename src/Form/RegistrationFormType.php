@@ -67,8 +67,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('administrateur')
-            ->add('actif')
+//            ->add('actif' )
 
 
             ->add('agreeTerms', CheckboxType::class, [

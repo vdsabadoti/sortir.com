@@ -40,6 +40,8 @@ class VilleController extends AbstractController
             $entityManager->persist($ville);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Ville ajoutée');
+
             return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -58,6 +60,8 @@ class VilleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Ville modifiée');
+
             return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,6 +77,7 @@ class VilleController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
             $entityManager->remove($ville);
             $entityManager->flush();
+            $this->addFlash('success', 'Ville suprimée');
         }
 
         return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);

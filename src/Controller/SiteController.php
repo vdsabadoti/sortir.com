@@ -40,6 +40,8 @@ class SiteController extends AbstractController
             $entityManager->persist($site);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Site ajouté');
+
             return $this->redirectToRoute('app_site_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -58,6 +60,8 @@ class SiteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Site modifié');
+
             return $this->redirectToRoute('app_site_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,6 +77,7 @@ class SiteController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->request->get('_token'))) {
             $entityManager->remove($site);
             $entityManager->flush();
+            $this->addFlash('success', 'Site suprimmé');
         }
 
         return $this->redirectToRoute('app_site_index', [], Response::HTTP_SEE_OTHER);

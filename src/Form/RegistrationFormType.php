@@ -31,14 +31,14 @@ class RegistrationFormType extends AbstractType
             ->add('nom', TextareaType::class, [
                 'label' => 'Nom',
                 'attr' => [
-                    'class' => 'block py-1.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-1.5 px-0 text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
             ->add('prenom', TextareaType::class, [
                 'label' => 'Prenom',
                 'attr' => [
-                    'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-2.5 px-0  text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
@@ -53,7 +53,7 @@ class RegistrationFormType extends AbstractType
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password',
-                    'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-2.5 px-0 text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'],
                 'constraints' => [
                     new NotBlank([

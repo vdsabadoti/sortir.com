@@ -19,11 +19,18 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Entity\EntityListener\SortieListener:
+    App\EntityListener\SortieListener:
         arguments:
             $etatRepository: '@App\Repository\EtatRepository'
+            $em: '@doctrine.orm.default_entity_manager'
         tags:
             - {name: 'doctrine.orm.entity_listener', event: 'postLoad'}
+
+    App\Services\SortiesService:
+        arguments:
+            $etatRepository: '@App\Repository\EtatRepository'
+            $em: '@doctrine.orm.default_entity_manager'
+            $participantRepository: '@App\Repository\ParticipantRepository'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

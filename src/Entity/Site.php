@@ -6,8 +6,12 @@ use App\Repository\SiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SiteRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields : ['nom'], message: 'Le site existe déjà', errorPath: 'nom')]
 class Site
 {
     #[ORM\Id]
@@ -16,6 +20,8 @@ class Site
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message :'Le champ est obligatoire')]
+    #[Assert\Length(min: 3, max: 30, minMessage: "Au moins 3 caracteres", maxMessage: "Pas plus de 255 caracteres")]
     private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Participant::class)]

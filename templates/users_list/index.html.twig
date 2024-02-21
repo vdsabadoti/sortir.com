@@ -26,17 +26,40 @@
                         </tr>
                         </thead>
                         <tbody>
+
+
                         {% for user in users %}
                             <tr class="border-b dark:border-gray-700">
-                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ user.id }}</th>
+                                <th scope="row"
+                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ user.id }}</th>
                                 <td class="px-4 py-3">{{ user.email }}</td>
                                 <td class="px-4 py-3">{{ user.prenom }}</td>
                                 <td class="px-4 py-3">{{ user.nom }}</td>
-                                {#                <td>{{ user.site }}</td> #}
-                                <td class="px-4 py-3">{{ user.actif }}</td>
+                                <td class="px-4 py-3">{{ user.site.nom }}</td>
+
+                                {% if not user.actif %}
+
+                                    <td>
+                                        <a href="{{ path('app_user_activate', {'id': user.id}) }}"
+                                           class="btn btn-lg btn-primary">Activer</a>
+                                    </td>
+
+
+                                {% endif %}
+
+                                {% if user.actif %}
+
+                                    <td>
+                                        <a href="{{ path('app_user_desactivate', {'id': user.id}) }}"
+                                           class="btn btn-lg btn-primary">Desactiver</a>
+                                    </td>
+
+
+                                {% endif %}
+
+                                <td><a href="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de vouloir supprimer cet utilisateur')">Supprimer</a></td>
 
                                 <td class="px-4 py-3">
-                                    {#                    <a href="">show</a> #}
                                     <a href="{{ path ('app_user_edit', {'id': user.id}) }}">edit</a>
                                 </td>
 

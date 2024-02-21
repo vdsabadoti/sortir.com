@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+
+    <h1 class="">User index</h1>
+
+    <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+
+        <div class="mx-auto px-4 lg:px-12">
+
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    <table class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">Id</th>
+                            <th scope="col" class="px-4 py-3">Email</th>
+                            <th scope="col" class="px-4 py-3">Prenom</th>
+                            <th scope="col" class="px-4 py-3">Nom</th>
+                            <th scope="col" class="px-4 py-3">Site</th>
+                            <th scope="col" class="px-4 py-3">Actif</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr class="border-b dark:border-gray-700">
+                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ user.id }}</th>
+                                <td class="px-4 py-3">{{ user.email }}</td>
+                                <td class="px-4 py-3">{{ user.prenom }}</td>
+                                <td class="px-4 py-3">{{ user.nom }}</td>
+                                {#                <td>{{ user.site }}</td> #}
+                                <td class="px-4 py-3">{{ user.actif }}</td>
+
+                                <td class="px-4 py-3">
+                                    {#                    <a href="">show</a> #}
+                                    <a href="{{ path ('app_user_edit', {'id': user.id}) }}">edit</a>
+                                </td>
+
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>No Records found</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+{% endblock %}

@@ -9,17 +9,18 @@
         <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Gérer les villes</h1>
     </div>
 
-
     <div class="row-span-2 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
-        <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les villes</h2>
-        <form action="" method="post" novalidate>
-            <table>
-                <tr>
-                    <td><label for="ville">Contient :</label></td>
-                    <td><input id="ville" name="ville" type="text"></td>
-                    <td><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button></td>
-                </tr>
-            </table>
+        <div class="row-start-2">
+            <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les villes</h2>
+        </div>
+        <form action="{{ path('app_ville_index') }}" method="post">
+            <div class="row-start-3">
+                <label for="site">Contient :</label>
+                <input id="site" name="site" type="text" class="text-lg font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+            <div class="row-start-4">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
+            </div>
         </form>
     </div>
 

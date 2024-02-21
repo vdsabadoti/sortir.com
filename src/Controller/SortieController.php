@@ -17,8 +17,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class SortieController extends AbstractController
 {
 
-    #[Route('/sortie/creer', name:'app_sortie_create')]
-    public function creerSortie(EntityManagerInterface $em, Request $request, ParticipantRepository $p, EtatRepository $e, SiteRepository $s) : Response
+    #[Route('/sortie/create', name:'app_sortie_create')]
+    public function create(EntityManagerInterface $em, Request $request, ParticipantRepository $p, EtatRepository $e, SiteRepository $s) : Response
     {
 
         $sortie = new Sortie();
@@ -60,8 +60,6 @@ class SortieController extends AbstractController
                 ]);
             }
 
-
-
             return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
         }
 
@@ -71,5 +69,13 @@ class SortieController extends AbstractController
         ]);
 
     }
+
+//    #[Route('/sortie/update', name:'app_sortie_update')]
+//    public function update(EntityManagerInterface $em, Request $request) : Response
+//    {
+//
+//
+//
+//    }
 
 }

@@ -25,6 +25,8 @@ class SortieController extends AbstractController
 
         $form = $this->createForm(SortieType::class, $sortie);
 
+        $sortie->setOrganisateur($p->find(1));
+
         $form->handleRequest($request);
 
 
@@ -34,7 +36,7 @@ class SortieController extends AbstractController
 
             $em->beginTransaction();
             try {
-                $sortie->setOrganisateur($p->find(1));
+
 
                // $sortie->setOrganisateur($this->getUser()->getId()) ;
                 $sortie->setEtat($e->find(1));

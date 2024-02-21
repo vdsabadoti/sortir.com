@@ -8,13 +8,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
-    fields: ['organisateur', 'dateHeureDebut', 'nom' ],
-    message: 'Vous ne pouvez pas créer deux fois une meme sortie a la meme date',
-    errorPath: 'nom'
+    fields: [ 'organisateur', 'dateHeureDebut', 'nom' ],
+    message: 'Vous ne pouvez pas créer deux fois une meme sortie a la meme date'
 )]
 class Sortie
 {
@@ -24,18 +24,19 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today')]
+    #[Assert\GreaterThan('today UTC')]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today')]
+    #[Assert\LessThan(propertyPath: 'dateHeureDebut')]
+    #[Assert\GreaterThan('today UTC')]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column(nullable: true)]

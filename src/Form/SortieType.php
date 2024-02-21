@@ -27,26 +27,32 @@ class SortieType extends AbstractType
     {
         $builder
             ->add('nom',TextType::class, [
+                'label' => 'Nom',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
             ])
             ->add('dateHeureDebut',DateTimeType::class, [
+                'label' => 'Date et Heure de début',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
             ])
             ->add('duree',NumberType::class, [
+                'label' => 'Duree (En minutes)',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
             ])
             ->add('dateLimiteInscription',DateTimeType::class, [
+                'label' => 'Date et Heure limite d\'inscription',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
             ])
             ->add('nbInscriptionsMax',NumberType::class, [
+                'label' => 'Nombre d\'inscriptions maximales',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
             ])
             ->add('infosSortie', TextareaType::class, [
+                'label' => 'Détail de la sortie',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
             ])
@@ -67,6 +73,7 @@ class SortieType extends AbstractType
                 ]);
 
                 $builder->add('lieu', LieuType::class, [
+                    'label' => 'Lieu',
                     'row_attr' => ['class' => 'my-1 flex flex-col'],
                     'attr' => ['class' => 'border-2 border-slate-400 ml-2 px-5 rounded-lg']
                 ]);
@@ -77,6 +84,7 @@ class SortieType extends AbstractType
             } else
             {
                 $builder->add('lieu', EntityType::class, [
+                    'label' => 'Lieu',
                     'class' => Lieu::class,
                     'choice_label' => 'nom',
                     'query_builder' => function(LieuRepository $lieuRepository) {
@@ -89,6 +97,7 @@ class SortieType extends AbstractType
             }
 
             $builder->add('submit', SubmitType::class, [
+                'label' => 'Envoyer',
                 'row_attr' => ['class' => 'w-fit mx-auto  flex flex-col'],
                 'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
             ])

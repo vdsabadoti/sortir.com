@@ -23,16 +23,18 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
 
-        $form = $this->createForm(SortieType::class, $sortie);
+        $form = $this->createForm(SortieType::class, $sortie, ['addLieu' => isset($request->get('sortie')['AjouterLieu'])]);
 
         $sortie->setOrganisateur($p->find(1));
 
         $form->handleRequest($request);
 
-
+        //dd($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
+
+
 
             $em->beginTransaction();
             try {

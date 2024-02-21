@@ -40,10 +40,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $telephone = null;
 
-    #[ORM\Column]
-    private ?bool $administrateur = null;
-
-    #[ORM\Column]
+    #[ORM\Column(options: ["default"=>false])]
     private ?bool $actif = null;
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
@@ -53,7 +50,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'participants')]
     private Collection $sorties;
 
-    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class)]
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class, orphanRemoval: true)]
     private Collection $sortiesOrganisees;
 
     public function __construct()
@@ -168,17 +165,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isAdministrateur(): ?bool
-    {
-        return $this->administrateur;
-    }
-
-    public function setAdministrateur(bool $administrateur): static
-    {
-        $this->administrateur = $administrateur;
-
-        return $this;
-    }
 
     public function isActif(): ?bool
     {

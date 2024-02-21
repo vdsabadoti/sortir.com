@@ -22,38 +22,60 @@ class UsersListController extends AbstractController
     }
 
 
-#[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(RegistrationFormType::class, $participant);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    return $this->render('users_list/edit.html.twig', [
-        'user' => $participant,
-        'form' => $form,
-    ]);
-
-}
-
-
-    #[Route('/delete/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->request->get('_token'))) {
+        $form = $this->createForm(RegistrationFormType::class, $participant);
+        $form->handleRequest($request);
 
-            $participant->setRoles(['ROLE_ADMIN']);
-
-            $entityManager->remove($participant);
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
+
+        return $this->render('users_list/edit.html.twig', [
+            'user' => $participant,
+            'form' => $form,
+        ]);
+
+    }
+
+
+    #[Route('/delete/{id}', name: 'app_user_delete')]
+    public function delete(Participant $participant, EntityManagerInterface $entityManager): Response
+    {
+
+
+        $entityManager->remove($participant);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_users_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/activate/{id}', name: 'app_user_activate')]
+    public function Activate(Participant $participant, EntityManagerInterface $entityManager): Response
+    {
+
+
+        $participant->setActif(true);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_users_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/desactivate/{id}', name: 'app_user_desactivate')]
+    public function Desactivate(Participant $participant, EntityManagerInterface $entityManager): Response
+    {
+
+
+        $participant->setActif(false);
+        $entityManager->flush();
+
 
         return $this->redirectToRoute('app_users_list', [], Response::HTTP_SEE_OTHER);
     }

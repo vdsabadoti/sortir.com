@@ -21,5 +21,4 @@ class SortieListener
             $this->em->flush();
         }
     }
-
 }

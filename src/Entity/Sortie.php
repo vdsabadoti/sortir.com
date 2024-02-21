@@ -26,22 +26,24 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Vous devez mettre un nom')]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today UTC')]
+    #[Assert\GreaterThan('today UTC', message: 'La date de debut doit etre supérieure a aujourd\'hui')]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Positive(message: 'La durée dois etre supérieure a 0')]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\LessThan(propertyPath: 'dateHeureDebut')]
-    #[Assert\GreaterThan('today UTC')]
+    #[Assert\LessThan(propertyPath: 'dateHeureDebut', message: 'la date limite d\' insctiption doit etre inférieure a la date de debuts')]
+    #[Assert\GreaterThan('today UTC', message: ' La date d\'inscription doit etre supérieure a aujourd\'hui')]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Positive(message: 'Le nombree d\'inscriptions max doit etre supérieur a zéro')]
     private ?int $nbInscriptionsMax = null;
 
     #[ORM\Column(length: 511, nullable: true)]

@@ -9,6 +9,7 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    //Override BOOT to set the timezone
     public function boot(): void
     {
         parent::boot();

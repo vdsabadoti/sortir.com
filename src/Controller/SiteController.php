@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/site')]
+#[IsGranted("ROLE_ADMIN")]
 class SiteController extends AbstractController
 {
     #[Route('/', name: 'app_site_index', methods: ['GET', 'POST'])]
@@ -40,6 +42,8 @@ class SiteController extends AbstractController
             $entityManager->persist($site);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Site ajouté');
+
             return $this->redirectToRoute('app_site_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -58,6 +62,8 @@ class SiteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Site modifié');
+
             return $this->redirectToRoute('app_site_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,6 +79,7 @@ class SiteController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->request->get('_token'))) {
             $entityManager->remove($site);
             $entityManager->flush();
+            $this->addFlash('success', 'Site suprimmé');
         }
 
         return $this->redirectToRoute('app_site_index', [], Response::HTTP_SEE_OTHER);

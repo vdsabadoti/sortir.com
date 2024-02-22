@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/ville')]
+#[IsGranted("ROLE_ADMIN")]
 class VilleController extends AbstractController
 {
     #[Route('/', name: 'app_ville_index', methods: ['GET', 'POST'])]
@@ -40,6 +42,8 @@ class VilleController extends AbstractController
             $entityManager->persist($ville);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Ville ajoutée');
+
             return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -58,6 +62,8 @@ class VilleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Ville modifiée');
+
             return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,6 +79,7 @@ class VilleController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
             $entityManager->remove($ville);
             $entityManager->flush();
+            $this->addFlash('success', 'Ville suprimée');
         }
 
         return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);

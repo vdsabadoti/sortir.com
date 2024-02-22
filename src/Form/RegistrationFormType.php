@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -42,12 +43,17 @@ class RegistrationFormType extends AbstractType
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
-
+            ->add('telephone', TelType::class, [
+                'label' => 'Telephone',
+                'attr' => [
+                    'class' => 'block py-2.5 px-0  text-sm text-gray-900 bg-white border-0 border-b-2 
+                    border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                ]
+            ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nom'
             ])
-
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -67,9 +73,6 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-//            ->add('actif' )
-
-
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -78,8 +81,6 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-
-//            ->add('', )
             ->add('Valider', SubmitType::class);
     }
 

@@ -39,7 +39,7 @@
 
                                 {% if not user.actif %}
 
-                                    <td>
+                                    <td class="px-4 py-3">
                                         <a href="{{ path('app_user_activate', {'id': user.id}) }}"
                                            class="btn btn-lg btn-primary">Activer</a>
                                     </td>
@@ -49,18 +49,17 @@
 
                                 {% if user.actif %}
 
-                                    <td>
-                                        <a href="{{ path('app_user_desactivate', {'id': user.id}) }}"
-                                           class="btn btn-lg btn-primary">Desactiver</a>
+                                    <td class="px-4 py-3">
+                                        <a href="{{ path('app_user_desactivate', {'id': user.id}) }}"> Desactiver </a>
                                     </td>
 
 
                                 {% endif %}
 
-                                <td><a href="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Vous êtes sur de vouloir supprimer cet utilisateur')">Supprimer</a></td>
+                                <td class="px-4 py-3"><a href="{{ path('app_user_delete', {'id': user.id}) }}"> Supprimer</a></td>
 
                                 <td class="px-4 py-3">
-                                    <a href="{{ path ('app_user_edit', {'id': user.id}) }}">edit</a>
+                                    <a href="{{ path ('app_edit_participant_by_admin', {'id': user.id}) }}">Editer </a>
                                 </td>
 
                             </tr>

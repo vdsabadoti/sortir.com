@@ -58,16 +58,18 @@ class SortieType extends AbstractType
             ])
             ->add('AjouterLieu', SubmitType::class, [
                 'label' => 'Ajouter un lieu manuelement',
-                'row_attr' => ['class' => 'w-fit mx-auto  flex flex-col'],
+                'row_attr' => ['class' => 'w-fit mx-auto  flex flex-col'
+                ],
                 'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg',
                     'formnovalidate' => 'formnovalidate']
 
             ]);
-            if ($options['addLieu']) { // ajoute un formulaire de création de lieu si l'utilisateur clique sur le bouton d'ajout de lieu
+            if ($options['addLieu'] || $options['InsererLieu']) { // ajoute un formulaire de création de lieu si l'utilisateur clique sur le bouton d'ajout de lieu
 
                 $builder->add('SelectionnerLieuxDisponibles', SubmitType::class, [
                     'label' => 'Sélectionner parmis les lieux disponibles',
-                    'row_attr' => ['class' => 'w-fit mx-auto  flex flex-col'],
+                    'row_attr' => [
+                        'class' => 'w-fit mx-auto  flex flex-col'],
                     'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg',
                         'formnovalidate' => 'formnovalidate']
                 ]);
@@ -75,7 +77,9 @@ class SortieType extends AbstractType
                 $builder->add('lieu', LieuType::class, [
                     'label' => 'Lieu',
                     'row_attr' => ['class' => 'my-1 flex flex-col'],
-                    'attr' => ['class' => 'border-2 border-slate-400 ml-2 px-5 rounded-lg']
+                    'attr' => ['class' => 'border-2 border-slate-400 ml-2 px-5 rounded-lg'],
+                    'inherit_data' => false,
+
                 ]);
 
                 $builder->remove('AjouterLieu');
@@ -96,12 +100,31 @@ class SortieType extends AbstractType
 
             }
 
-            $builder->add('submit', SubmitType::class, [
-                'label' => 'Envoyer',
-                'row_attr' => ['class' => 'w-fit mx-auto  flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
-            ])
-        ;
+            // Si l'utilisateur veut ajouter un lieu on mets un bouton différent qui permettra au controller de faire l'insertion au lieu de la mise a jour
+            if($options['addLieu'])
+            {
+                $builder->add('InsererLieu', SubmitType::class, [
+                    'label' => 'Envoyer',
+                    'row_attr' => [
+                        'class' => 'w-fit mx-auto  flex flex-col'
+                    ],
+                    'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
+                ])
+                ;
+            }
+            else
+            {
+                $builder->add('submit', SubmitType::class, [
+                    'label' => 'Envoyer',
+                    'row_attr' => [
+                        'class' => 'w-fit mx-auto  flex flex-col'
+                    ],
+                    'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
+                ])
+                ;
+            }
+
+
 
 
 
@@ -112,6 +135,8 @@ class SortieType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Sortie::class,
             'addLieu' => false,
+            'InsererLieu' => false,
+            'allow_extra_fields' => true,
         ]);
     }
 }

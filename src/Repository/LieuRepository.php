@@ -30,6 +30,25 @@ class LieuRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByTextAndState($text, $desactif) : array
+    {
+        if ($desactif){
+            return $this->createQueryBuilder('l')
+                ->where('l.nom LIKE :text')
+                ->setParameter('text', '%' . $text . '%')
+                ->andWhere('l.actif = :value')
+                ->setParameter('value', 0)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('l')
+                ->where('l.nom LIKE :text')
+                ->setParameter('text', '%' . $text . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    }
+
 //    /**
 //     * @return Lieu[] Returns an array of Lieu objects
 //     */

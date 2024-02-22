@@ -18,15 +18,13 @@ class LieuController extends AbstractController
     public function index(Request $request, LieuRepository $lieuRepository): Response
     {
         $text = $request->request->get('lieu');
-        if ($text != "") {
-            $lieux = $lieuRepository->findByText($text);
-            return $this->render('lieu/index.html.twig', [
-                'lieux' => $lieux,
-            ]);
-        }
+        $desactif = $request->request->get('desactif');
+
+        $lieux = $lieuRepository->findByTextAndState($text, $desactif);
         return $this->render('lieu/index.html.twig', [
-            'lieux' => $lieuRepository->findAll(),
+            'lieux' => $lieux,
         ]);
+
     }
 
     #[Route('/new', name: 'app_lieu_new', methods: ['GET', 'POST'])]
@@ -71,9 +69,27 @@ class LieuController extends AbstractController
     public function delete(Request $request, Lieu $lieu, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$lieu->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($lieu);
-            $entityManager->flush();
+            if (sizeof($lieu->getSorties()) == 0){
+                $entityManager->remove($lieu);
+                $entityManager->flush();
+                $this->addFlash('success', 'Lieu supprimé');
+            } else {
+                $this->addFlash('warning', 'Suppression impossible');
+            }
         }
+        return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/switch', name: 'app_lieu_switch', methods: ['GET'])]
+    public function switch(Lieu $lieu, EntityManagerInterface $entityManager): Response
+    {
+        if ($lieu->isActif()) {
+            $lieu->setActif(false);
+        } else {
+            $lieu->setActif(true);
+        }
+        $entityManager->persist($lieu);
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);
     }

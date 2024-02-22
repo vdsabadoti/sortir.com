@@ -30,9 +30,12 @@ class Lieu
     #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: Sortie::class)]
     private Collection $sorties;
 
-    #[ORM\ManyToOne(inversedBy: 'lieux')]
+    #[ORM\ManyToOne(inversedBy: 'lieu')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
+
+    #[ORM\Column]
+    private ?bool $actif = null;
 
     public function __construct()
     {
@@ -130,6 +133,18 @@ class Lieu
     public function setVille(?Ville $ville): static
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function isActif(): ?bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): static
+    {
+        $this->actif = $actif;
 
         return $this;
     }

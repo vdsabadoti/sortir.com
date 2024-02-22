@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile index{% endblock %}
+
+{% block body %}
+
+    <h1 class="">Profile</h1>
+
+
+
+
+    <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+
+        <div class="mx-auto px-4 lg:px-12">
+
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    <ul>
+
+                        <li>Email : {{ app.user.email }}</li>
+                        <li>Prénom : {{ app.user.prenom }}</li>
+                        <li>Nom : {{ app.user.nom }}</li>
+                        <li>Telephone : {{ app.user.telephone }}</li>
+                        <li>Site : {{ app.user.site.nom }}</li>
+
+                    </ul>
+
+
+                    <a href="{{ path ('app_edit_participant', {'id' : app.user.id}) }}">Editer</a>
+                    <br>
+
+                    <a href="{{ path ('app_update_password_from_profile', {'id' : app.user.id}) }}">Changer Mot De Passe</a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+{% endblock %}

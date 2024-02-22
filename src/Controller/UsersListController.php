@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class UsersListController extends AbstractController
 {
     #[Route('/users/list', name: 'app_users_list')]
+//    #[IsGranted('ROLE_ADMIN')]
     public function user(ParticipantRepository $participantRepository): Response
     {
         return $this->render('users_list/index.html.twig', [
@@ -21,25 +22,25 @@ class UsersListController extends AbstractController
         ]);
     }
 
+//    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+//    public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+//    {
+//        $form = $this->createForm(RegistrationFormType::class, $participant);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager->persist($participant);
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->render('users_list/edit.html.twig', [
+//            'user' => $participant,
+//            'form' => $form,
+//        ]);
 
-    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(RegistrationFormType::class, $participant);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('users_list/edit.html.twig', [
-            'user' => $participant,
-            'form' => $form,
-        ]);
-
-    }
+//    }
 
 
     #[Route('/delete/{id}', name: 'app_user_delete')]

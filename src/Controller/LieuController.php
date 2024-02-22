@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Lieu;
 use App\Form\LieuType;
 use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +16,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class LieuController extends AbstractController
 {
     #[Route('/', name: 'app_lieu_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, LieuRepository $lieuRepository): Response
+    public function index(Request $request, LieuRepository $lieuRepository, VilleRepository $villeRepository): Response
     {
+        $villes = $villeRepository->findAll();
+
         $text = $request->request->get('lieu');
         $desactif = $request->request->get('desactif');
+        $ville = $request->request->get('ville');
 
-        $lieux = $lieuRepository->findByTextAndState($text, $desactif);
+        $lieux = $lieuRepository->findByTextAndStateAndVille($text, $desactif, $ville);
         return $this->render('lieu/index.html.twig', [
             'lieux' => $lieux,
+            'villes' => $villes
         ]);
 
     }

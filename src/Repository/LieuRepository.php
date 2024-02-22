@@ -30,23 +30,24 @@ class LieuRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByTextAndState($text, $desactif) : array
+    public function findByTextAndStateAndVille($text, $desactif, $ville) : array
     {
-        if ($desactif){
-            return $this->createQueryBuilder('l')
-                ->where('l.nom LIKE :text')
-                ->setParameter('text', '%' . $text . '%')
-                ->andWhere('l.actif = :value')
-                ->setParameter('value', 0)
-                ->getQuery()
-                ->getResult();
-        } else {
-            return $this->createQueryBuilder('l')
-                ->where('l.nom LIKE :text')
-                ->setParameter('text', '%' . $text . '%')
-                ->getQuery()
-                ->getResult();
+
+        $query = $this->createQueryBuilder('l')
+            ->where('l.nom LIKE :text')
+            ->setParameter('text', '%' . $text . '%');
+
+        if ($ville != 0) {
+            $query->andWhere('l.ville = :id')
+                ->setParameter('id', $ville);
         }
+
+        if ($desactif) {
+            $query->andWhere('l.actif = :value')
+                ->setParameter('value', 0);
+        }
+
+        return $query->getQuery()->getResult();
     }
 
 //    /**

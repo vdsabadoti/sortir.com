@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ville;
 use App\Form\VilleType;
+use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class VilleController extends AbstractController
 {
     #[Route('/', name: 'app_ville_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, VilleRepository $villeRepository): Response
+    public function index(Request $request, VilleRepository $villeRepository, SortieRepository $sortieRepository): Response
     {
         $text = $request->request->get('ville');
         if ($text != "") {

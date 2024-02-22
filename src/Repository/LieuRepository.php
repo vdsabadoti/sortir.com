@@ -21,6 +21,15 @@ class LieuRepository extends ServiceEntityRepository
         parent::__construct($registry, Lieu::class);
     }
 
+    public function findByText($text) : array
+    {
+        return $this->createQueryBuilder('l')
+            ->where('l.nom LIKE :text')
+            ->setParameter('text', '%' . $text . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Lieu[] Returns an array of Lieu objects
 //     */

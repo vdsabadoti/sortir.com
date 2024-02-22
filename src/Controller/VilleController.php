@@ -77,9 +77,14 @@ class VilleController extends AbstractController
     public function delete(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($ville);
-            $entityManager->flush();
-            $this->addFlash('success', 'Ville suprimée');
+            if (sizeof($ville->getLieux()) == 0) {
+                $entityManager->remove($ville);
+                $entityManager->flush();
+                $this->addFlash('success', 'Ville suprimée');
+            }
+            else {
+                $this->addFlash('warning', 'Suppression impossible');
+            }
         }
 
         return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);

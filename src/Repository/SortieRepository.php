@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -21,6 +22,25 @@ class SortieRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sortie::class);
     }
+
+    public function search(string $search): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.nom LIKE :search')
+            ->setParameter('search',"%".$search."%")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findParticipe(Participant $participant):array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.participants', 'p', 'WITH', 'p = :participant')
+            ->setParameter('participant', $participant)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 

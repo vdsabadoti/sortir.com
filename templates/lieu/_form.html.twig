@@ -1,0 +1,39 @@
+
+<div class="container mx-auto flex justify-center">
+{{ form_start(form) }}
+
+    <div class=" mx-auto">
+    {{ form_label(form.nom) }}
+    {{ form_widget(form.nom) }}
+    {{ form_errors(form.nom) }}
+    </div>
+    <div class=" mx-auto">
+        {{ form_label(form.rue) }}
+        {{ form_widget(form.rue) }}
+        {{ form_errors(form.rue) }}
+    </div>
+    <div class=" mx-auto">
+        {{ form_label(form.latitude) }}
+        {{ form_widget(form.latitude) }}
+        {{ form_errors(form.latitude) }}
+    </div>
+    <div class=" mx-auto">
+        {{ form_label(form.longitude) }}
+        {{ form_widget(form.longitude) }}
+        {{ form_errors(form.longitude) }}
+    </div>
+    <div class=" mx-auto">
+        {{ form_label(form.ville) }}
+        {{ form_widget(form.ville) }}
+        {{ form_errors(form.ville) }}
+    </div>
+    <div class=" mx-auto">
+        {{ form_label(form.actif) }}
+        {{ form_widget(form.actif) }}
+        {{ form_errors(form.actif) }}
+    </div>
+    <div class=" mx-auto p-5">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ button_label|default('Créer') }}</button>
+    </div>
+{{ form_end(form) }}
+</div>

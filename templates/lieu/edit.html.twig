@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer un lieu{% endblock %}
+
+{% block body %}
+
+    <div class="container mx-auto grid grid-rows-1 gap-4 flex">
+        <div class="mx-auto row-span-1 w-3/5 p-6 text-center">
+            <h1 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Editer un lieu</h1>
+        </div>
+    </div>
+
+
+    <div class="container mx-auto grid grid-rows-3 gap-4 flex">
+        <div class="mx-auto row-span-3 w-3/5 sm:w-1/2 p-6 bg-white border border-gray-200 rounded-lg shadow">
+            <div class="mx-auto justify-center">
+                {{ include('lieu/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
+
+            <div class="mx-auto p-5 justify-center">
+                <a href="{{ path('app_lieu_index') }}" >
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Retour
+                    </button>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

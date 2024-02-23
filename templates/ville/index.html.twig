@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ville index{% endblock %}
+
+{% block body %}
+<div class="container mx-auto grid grid-rows-3 gap-4 flex items-center">
+
+    <div class="row-span-1 mx-auto self-auto">
+        <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Gérer les villes</h1>
+    </div>
+
+    <div class="row-span-2 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
+        <div class="row-start-2">
+            <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les villes</h2>
+        </div>
+        <form action="{{ path('app_ville_index') }}" method="post">
+            <div class="row-start-3">
+                <label for="site">Contient :</label>
+                <input id="site" name="ville" type="text" class="text-lg font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+            <div class="row-start-4">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+    <div class="container mx-auto grid grid-rows-2 gap-4 flex items-center">
+    <div class="row-span-2 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Nom</th>
+                        <th scope="col" class="px-6 py-3">Code Postal</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ville in villes %}
+                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <td class="px-6 py-4">{{ ville.nom }}</td>
+                        <td class="px-6 py-4">{{ ville.codePostal }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ path('app_ville_edit', {'id': ville.id}) }}">Modifier</a>
+                        </td>
+                        <td>
+                            {{ include('ville/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="px-10">Aucune ville trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+             </table>
+        </div>
+
+        <div class="text-left pt-3">
+            <a class="px-6" href="{{ path('app_ville_new') }}">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Créer
+                </button>
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

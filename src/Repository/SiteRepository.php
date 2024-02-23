@@ -32,6 +32,15 @@ class SiteRepository extends ServiceEntityRepository
     }
 
 
+    public function findByText($text) : array
+    {
+      return $this->createQueryBuilder('s')
+      ->where('s.nom LIKE :text')
+          ->setParameter('text', '%' . $text . '%')
+          ->getQuery()
+          ->getResult();
+    }
+
 //    /**
 //     * @return Site[] Returns an array of Site objects
 //     */

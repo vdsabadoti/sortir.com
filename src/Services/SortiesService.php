@@ -12,14 +12,14 @@ class SortiesService
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly EtatRepository $etatRepository,
-        private readonly ParticipantRepository $participantRepository)
+        private readonly EtatRepository         $etatRepository,
+        private readonly ParticipantRepository  $participantRepository)
     {
 
     }
 
     //Ajouter un participant à la sortie (ouverte)
-    public function ajouterParticipant(Sortie $sortie, string $identifiant) : bool
+    public function ajouterParticipant(Sortie $sortie, string $identifiant): bool
     {
         $participant = $this->participantRepository->findOneBy(['email' => $identifiant]);
 
@@ -33,7 +33,7 @@ class SortiesService
     }
 
     //Retirer un participant d'une sortie (ouverte ou cloturée)
-    public function retirerParticipant(Sortie $sortie, string $identifiant) : bool
+    public function retirerParticipant(Sortie $sortie, string $identifiant): bool
     {
         $participant = $this->participantRepository->findOneBy(['email' => $identifiant]);
 
@@ -48,21 +48,24 @@ class SortiesService
 
 
     //Verifie si la sortie est ouverte
-    private function sortieOuverte(Sortie $sortie) : bool {
+    private function sortieOuverte(Sortie $sortie): bool
+    {
         return ($sortie->getEtat()->getId() === 2);
     }
 
     //Verifie si la sortie est cloturée
-    private function sortieCloturee(Sortie $sortie) : bool {
+    private function sortieCloturee(Sortie $sortie): bool
+    {
         return ($sortie->getEtat()->getId() === 3);
     }
 
 
     //Verifie si un participant est inscrit dans un sortie
-    private function participantInscrit(Sortie $sortie, Participant $participant) : bool {
+    private function participantInscrit(Sortie $sortie, Participant $participant): bool
+    {
         $participants = $sortie->getParticipants();
-        foreach ($participants as $p){
-            if ($p->getId() == $participant->getId()){
+        foreach ($participants as $p) {
+            if ($p->getId() == $participant->getId()) {
                 return true;
             }
         }
@@ -70,25 +73,55 @@ class SortiesService
     }
 
     //Mise à jour de l'état d'une sortie
-    private function majEtatSortie(Sortie $sortie) : void {
+    private function majEtatSortie(Sortie $sortie): void
+    {
 
         //Cloturé si nb de participants atteint, sinon ouverte
         if (count($sortie->getParticipants()) == $sortie->getNbInscriptionsMax()) {
-            $sortie->setEtat($this->etatRepository->findOneBy(['id'=> 3]));
+            $sortie->setEtat($this->etatRepository->findOneBy(['id' => 3]));
         } else {
-            $sortie->setEtat($this->etatRepository->findOneBy(['id'=> 2]));
+            $sortie->setEtat($this->etatRepository->findOneBy(['id' => 2]));
         }
     }
 
     //Mise à jour de la base de données
-    private function majSortieBaseDonnees(Sortie $sortie){
+    private function majSortieBaseDonnees(Sortie $sortie)
+    {
         $this->em->persist($sortie);
         $this->em->flush();
     }
 
     //Verifie si le participant est l'organisateur de la sortie
-    private function estOrganisateur(Sortie $sortie, Participant $participant) : bool {
+    private function estOrganisateur(Sortie $sortie, Participant $participant): bool
+    {
         return ($sortie->getOrganisateur()->getId() == $participant->getId());
     }
+
+
+    // Verifie si l'utilisateur peut annuler une sortie
+    public function verifAnnulerSortie(Sortie $sortie): bool
+    {
+
+        if ($sortie->getDateHeureDebut() > new \DateTime() && $sortie->getEtat()->getId() === 2) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    // Verifie si l'utilisateur peut supprimer une sortie
+    public function verifSuppressionSortie(Sortie $sortie): bool
+    {
+
+        if ($sortie->getEtat()->getId() === 1) {
+            return true;
+        }
+
+        return false;
+
+
+    }
+
 
 }

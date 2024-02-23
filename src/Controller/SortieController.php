@@ -7,6 +7,7 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
+use App\Services\SortiesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,7 +81,7 @@ class SortieController extends AbstractController
 
     }
 
-    #[Route('/sortie/update/{id}', name:'app_sortie_update')]
+    #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
     public function update(EntityManagerInterface $em, Request $request, Sortie $sortie) : Response
     {
 
@@ -118,11 +119,6 @@ class SortieController extends AbstractController
 
         $form->handleRequest($request);
 
-
-        // Si l'utilisateur veut ajouter un lieu on lui renvoie le meme formulaire mais avec le lieux vide
-
-
-
         if($form->isSubmitted() && $form->isValid())
         {
             $em->beginTransaction();
@@ -153,6 +149,58 @@ class SortieController extends AbstractController
         return $this->render('sortie/update.html.twig', [
             'form' => $form
         ]);
+
+
+    }
+
+    #[Route('/sortie/cancel/{id}', name: 'app_sortie_cancel', requirements: ['id' => '\d+'])]
+    public function cancelSortie(EntityManagerInterface $em, Sortie $sortie, EtatRepository $etat, SortiesService $sortiesService) : Response
+    {
+
+        if($sortiesService->verifAnnulerSortie($sortie))
+        {
+            //dd($sortie);
+            $sortie->setEtat($etat->find(6));
+
+            $em->persist($sortie);
+            $em->flush();
+
+            return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+        }
+
+        $this->addFlash('error', 'Impossible d\'annuler une sortie qui n\'est pas encore ouverte ou qui a deja débuté');
+        return $this->render('sortie/detail.html.twig');
+
+    }
+
+    #[Route('/sortie/delete/{id}', name: 'app_sorties_delete', requirements: ['id' => '\d+'])]
+    public function deleteSortie(EntityManagerInterface $em, Sortie $sortie, EtatRepository $etat, SortiesService $sortiesService) : Response
+    {
+
+        if($sortiesService->verifSuppressionSortie($sortie))
+        {
+
+            //dd("test");
+
+            $em->beginTransaction();
+            try {
+
+                $em->remove($sortie);
+                $em->flush();
+
+                $em->commit();
+            } catch (\Exception $e) {
+                $em->rollBack();
+                var_dump($e->getMessage());
+
+
+            }
+            return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+        }
+
+        $this->addFlash('error', 'Impossible de supprimer une sortie publiée');
+        return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+
 
 
     }

@@ -9,7 +9,7 @@
             <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Gérer les lieux</h1>
         </div>
 
-        <div class="row-span-4 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
+        <div class="row-span-4 w-full sm:w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
             <div class="row-start-2">
                 <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les lieux</h2>
             </div>
@@ -34,9 +34,9 @@
                     </label>
                 </div>
                 <div class="row-start-6 inline-flex">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
                     <a class="px-6" href="{{ path('app_lieu_new') }}">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Créer
                         </button>
                     </a>
@@ -45,60 +45,60 @@
         </div>
     </div>
 
-    <div class="container mx-auto grid grid-rows-2 gap-4 items-center hidden sm:block">
-    <div class="row-span-2 mx-auto p-6 w-4/5 self-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div class="flex items-center">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Nom</th>
-                            <th scope="col" class="px-6 py-3">Rue</th>
-                            <th scope="col" class="px-6 py-3">Ville</th>
-                            <th scope="col" class="px-6 py-3">Actif</th>
-                            <th scope="col" class="px-6 py-3">Actions</th>
-                            <th scope="col" class="px-6 py-3"></th>
-                            <th scope="col" class="px-6 py-3"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for lieu in lieux %}
-                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td class="px-6 py-4">{{ lieu.nom }}</td>
-                            <td class="px-6 py-4">{{ lieu.rue }}</td>
-                            <td class="px-6 py-4">{{ lieu.ville.nom }}</td>
-                            {% if (lieu.actif == true) %}
-                            <td class="px-6 py-4">
-                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Actif</span>
-                            </td>
-                            {% else %}
-                            <td class="px-6 py-4 text-red-500 font-bold">
-                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Desactif</span>
-                            </td>
-                            {%  endif %}
-                            <td class="px-6 py-4">
-                                <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}">Modifier</a>
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="{{ path('app_lieu_switch', {'id': lieu.id}) }}"> {{ (lieu.actif == true) ? 'Desactiver' : 'Activer' }}</a>
-                            </td>
-                            <td>
-                                {{ include('lieu/_delete_form.html.twig') }}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="4" class="px-10">Aucun lieu trouvé</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                 </table>
+    <div class="container w-full mx-auto grid grid-rows-2 gap-4 items-center hidden sm:block">
+        <div class="row-span-2 mx-auto p-6 w-full self-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex items-center">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Nom</th>
+                                <th scope="col" class="px-6 py-3">Rue</th>
+                                <th scope="col" class="px-6 py-3">Ville</th>
+                                <th scope="col" class="px-6 py-3">Actif</th>
+                                <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for lieu in lieux %}
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <td class="px-4 py-4">{{ lieu.nom }}</td>
+                                <td class="px-4 py-4">{{ lieu.rue }}</td>
+                                <td class="px-4 py-4">{{ lieu.ville.nom }}</td>
+                                {% if (lieu.actif == true) %}
+                                <td class="px-4 py-4">
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Actif</span>
+                                </td>
+                                {% else %}
+                                <td class="px-4 py-4 text-red-500 font-bold">
+                                    <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Desactif</span>
+                                </td>
+                                {%  endif %}
+                                <td colspan="1">
+                                    <div class="w-full inline-flex justify-between">
+                                    <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="" width="30" height="30">
+                                    </a>
+                                    <a href="{{ path('app_lieu_switch', {'id': lieu.id}) }}">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1/1228.png" alt="" width="30" height="30">
+                                    </a>
+                                    {{ include('lieu/_delete_form.html.twig') }}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="px-10">Aucun lieu trouvé</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                     </table>
+            </div>
         </div>
+    </div>
 
-    </div>
-    </div>
 
     {% for lieu in lieux %}
-    <div class="mx-auto w-4/5 gap-4 sm:hidden">
+    <div class="mx-auto w-full gap-4 sm:hidden">
         <div class="w-full bg-white p-8 rounded-lg border border-gray-200 shadow">
             <div class="flex items-center grid grid-rows-4 space-y-1">
                 <div class="row-span-1 inline-flex justify-between">
@@ -108,13 +108,13 @@
                     {% if (lieu.actif == true) %}
                         <div>
                             <div>
-                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Actif</span>
+                                <span class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Actif</span>
                             </div>
                         </div>
                     {% else %}
                         <div>
                             <div>
-                                <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Desactif</span>
+                                <span class="bg-red-100 text-red-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Desactif</span>
                             </div>
                         </div>
                     {%  endif %}
@@ -126,13 +126,16 @@
                     <div class="text-gray-500">{{ lieu.ville.nom }}</div>
                 </div>
                 <div class="row-span-1">
-                    <div class="text-xs font-medium">Actions: </div>
-                    <div class="text-gray-500 inline-flex space-x-8">
+                    <div class="w-full text-gray-500 inline-flex justify-between px-4">
                         <div>
-                            <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}">Modifier</a>
+                            <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Supprimer" width="30" height="30">
+                            </a>
                         </div>
                         <div>
-                            <a href="{{ path('app_lieu_switch', {'id': lieu.id}) }}"> {{ (lieu.actif == true) ? 'Desactiver' : 'Activer' }}</a>
+                            <a href="{{ path('app_lieu_switch', {'id': lieu.id}) }}">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1/1228.png" alt="" width="30" height="30">
+                            </a>
                         </div>
                         <div>
                             {{ include('lieu/_delete_form.html.twig') }}

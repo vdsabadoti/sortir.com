@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class SortiesService
 {
@@ -76,7 +77,9 @@ class SortiesService
         if (count($sortie->getParticipants()) == $sortie->getNbInscriptionsMax()) {
             $sortie->setEtat($this->etatRepository->findOneBy(['id'=> 3]));
         } else {
-            $sortie->setEtat($this->etatRepository->findOneBy(['id'=> 2]));
+            if ($sortie->getDateLimiteInscription() < new \DateTime()){
+                $sortie->setEtat($this->etatRepository->findOneBy(['id'=> 2]));
+            }
         }
     }
 

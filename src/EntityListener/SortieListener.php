@@ -27,26 +27,26 @@ class SortieListener
         $finSortie->modify("+ $duree minutes");
 
 
-        if (in_array($sortie->getEtat()->getId(), [2,3,4])){
+        if (in_array($sortie->getEtat()->getId(), [2,3,4])) {
 
-            ///Le début de la sortie est dans le passé ?
-            if ($sortie->getDateHeureDebut() < $currentDateTime){
+            ///La date limite d'inscription est passé ?
+            if ($sortie->getDateLimiteInscription() < $currentDateTime) {
+                $nouveauEtat = 3; //CLOTURE
 
-                //Si oui =>
-                $nouveauEtat = 5;
+                ///Le début de la sortie est dans le passé ?
+                if ($sortie->getDateHeureDebut() < $currentDateTime) {
+                    $nouveauEtat = 5; //PASSE
 
-                //La sortie n'est pas encore finie ?
-                if ($finSortie > $currentDateTime) {
-                    //Passage à l'état activité en cours (4)
-                    $nouveauEtat = 4;
+                    //La sortie n'est pas encore finie ?
+                    if ($finSortie > $currentDateTime) {
+                        $nouveauEtat = 4; //ACTIVITE EN COURS
+                    }
+
+                    //La sortie doit-elle être archivée ?
+                    if ($sortie->getDateHeureDebut()->modify("+$delayArchive days") < $currentDateTime) {
+                        $nouveauEtat = 7; //ARCHIVEE
+                    }
                 }
-
-                //La sortie doit-elle être archivée ?
-                if ($sortie->getDateHeureDebut()->modify("+$delayArchive days") < $currentDateTime) {
-                    //Passage à l'état archivé (7)
-                    $nouveauEtat = 7;
-                }
-
                 //Mise à jour de la sortie
                 $this->miseAJourEtat($sortie, $nouveauEtat);
             }

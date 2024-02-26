@@ -108,6 +108,18 @@ class SortieController extends AbstractController
             'sites' => $sites,
         ]);
     }
+    #[Route('/detail/{id}', name: 'app_sorties_detail')]
+    public function detail(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        $sites = $siteRepository->findAll();
+
+        return $this->render('sortie/detail.html.twig', [
+            'sortie' => $sortie,
+            'sites' => $sites,
+        ]);
+    }
 
 
 }

@@ -50,7 +50,9 @@ class EditParticipantByAdminType extends AbstractType
 
             ->add('site', EntityType::class, [
                 'class' => Site::class,
-                'choice_label' => 'nom'
+                'choice_label' => 'nom',
+                'placeholder'=>'Choisir ville',
+                'label'=>false
             ]);
     }
 

@@ -24,6 +24,8 @@ class PasswordUpdateFromProfileType extends AbstractType
                 'options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
+                        'class' => 'block py-2.5 px-0  text-sm text-gray-900 bg-white border-0 border-b-2 
+                    border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:ring-0 focus:border-blue-600 peer'
                     ],
                 ],
                 'first_options' => [
@@ -38,10 +40,10 @@ class PasswordUpdateFromProfileType extends AbstractType
                             'max' => 4096,
                         ]),
                     ],
-                    'label' => 'New password',
+                    'label' => 'Nouveau mot de passe :',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => 'Confirmer votre mot de passe : ',
                 ],
                 'invalid_message' => 'The password fields must match.',
                 // Instead of being set onto the object directly,

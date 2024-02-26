@@ -99,10 +99,10 @@ class SortiesService
 
 
     // Verifie si l'utilisateur peut annuler une sortie
-    public function verifAnnulerSortie(Sortie $sortie): bool
+    public function verifAnnulerSortie(Sortie $sortie, Participant $user): bool
     {
 
-        if ($sortie->getDateHeureDebut() > new \DateTime() && $sortie->getEtat()->getId() === 2) {
+        if ($sortie->getDateHeureDebut() > new \DateTime() && $sortie->getEtat()->getId() === 2 && $this->estOrganisateur($sortie,$user)) {
             return true;
         }
 
@@ -111,16 +111,23 @@ class SortiesService
     }
 
     // Verifie si l'utilisateur peut supprimer une sortie
-    public function verifSuppressionSortie(Sortie $sortie): bool
+    public function verifSuppressionSortie(Sortie $sortie, Participant $user): bool
     {
-
-        if ($sortie->getEtat()->getId() === 1) {
+        if ($sortie->getEtat()->getId() === 1 && $this->estOrganisateur($sortie,$user)) {
             return true;
         }
 
         return false;
+    }
 
+    // Vérifie si l'utilisateur peut modifier sa sortie (il ne peut la modifier que si la sortie est a l'état 1 : créée )
+    public function verifModificationSortie(Sortie $sortie, Participant $user) : bool
+    {
+        if ($sortie->getEtat()->getId() === 1 && $this->estOrganisateur($sortie,$user)) {
+            return true;
+        }
 
+        return false;
     }
 
 

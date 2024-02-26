@@ -82,74 +82,80 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
-    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie) : Response
+    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService) : Response
     {
 
-        /* Si l'utilisateur veut ajouter un lieu on lui mets le formulaire de creation de lieu
-           tout en supprimant de l'objet transféré le lieu selectionner afin que les champs du nouveau formulaire soient vides
-        */
-        if(isset($request->get('sortie')['AjouterLieu']))
+        if($sortiesService->verifModificationSortie($sortie, $this->getUser()))
         {
+            /* Si l'utilisateur veut ajouter un lieu on lui mets le formulaire de creation de lieu
+                       tout en supprimant de l'objet transféré le lieu selectionner afin que les champs du nouveau formulaire soient vides
+                    */
+            if(isset($request->get('sortie')['AjouterLieu']))
+            {
+
+                $form = $this->createForm(SortieType::class, $sortie, [
+                    'addLieu' => isset($request->get('sortie')['AjouterLieu']),
+                    'InsererLieu' => isset($request->get('sortie')['InsererLieu'])
+                ]);
+
+                $form->get('lieu')->setData(null);
+
+                $form->handleRequest($request);
+
+                return $this->render('sortie/creer.html.twig', [
+                    'form' => $form
+                ]);
+            }
+
 
             $form = $this->createForm(SortieType::class, $sortie, [
                 'addLieu' => isset($request->get('sortie')['AjouterLieu']),
                 'InsererLieu' => isset($request->get('sortie')['InsererLieu'])
             ]);
 
-            $form->get('lieu')->setData(null);
+            // On resupprime le lieu de la liste déroulante afin de laisser place au nouveau afin de faire une insertion
+            if(isset($request->get('sortie')['InsererLieu']))
+            {
+                $form->get('lieu')->setData(null);
+            }
 
             $form->handleRequest($request);
 
-            return $this->render('sortie/creer.html.twig', [
+            if($form->isSubmitted() && $form->isValid())
+            {
+                $em->beginTransaction();
+                try {
+
+                    //dd($sortie->getLieu());
+                    // On persiste le lieu
+                    $em->persist($sortie->getLieu());
+                    $em->flush();
+
+                    // On persiste la sortie
+                    $em->persist($sortie);
+                    $em->flush();
+
+                    $em->commit();
+                } catch (\Exception $e) {
+                    $em->rollBack();
+                    var_dump($e->getMessage());
+                    return $this->render('sortie/update.html.twig', [
+                        'form' => $form
+                    ]);
+                }
+
+                $this->addFlash('success', 'Modification effectuée');
+                return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+            }
+
+
+            return $this->render('sortie/update.html.twig', [
                 'form' => $form
             ]);
         }
 
-
-        $form = $this->createForm(SortieType::class, $sortie, [
-            'addLieu' => isset($request->get('sortie')['AjouterLieu']),
-            'InsererLieu' => isset($request->get('sortie')['InsererLieu'])
-        ]);
-
-        // On resupprime le lieu de la liste déroulante afin de laisser place au nouveau afin de faire une insertion
-        if(isset($request->get('sortie')['InsererLieu']))
-        {
-            $form->get('lieu')->setData(null);
-        }
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $em->beginTransaction();
-            try {
-
-                //dd($sortie->getLieu());
-                // On persiste le lieu
-                $em->persist($sortie->getLieu());
-                $em->flush();
-
-                // On persiste la sortie
-                $em->persist($sortie);
-                $em->flush();
-
-                $em->commit();
-            } catch (\Exception $e) {
-                $em->rollBack();
-                var_dump($e->getMessage());
-                return $this->render('sortie/update.html.twig', [
-                    'form' => $form
-                ]);
-            }
-
-            return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
-        }
-
-
-        return $this->render('sortie/update.html.twig', [
-            'form' => $form
-        ]);
-
+        $this->addFlash('error', 'Vous ne pouvez pas modifier une sortie deja publiée');
+        return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
 
     }
 
@@ -157,7 +163,7 @@ class SortieController extends AbstractController
     public function cancelSortie(EntityManagerInterface $em, Sortie $sortie, EtatRepository $etat, SortiesService $sortiesService) : Response
     {
 
-        if($sortiesService->verifAnnulerSortie($sortie))
+        if($sortiesService->verifAnnulerSortie($sortie, $this->getUser()))
         {
             //dd($sortie);
             $sortie->setEtat($etat->find(6));
@@ -177,11 +183,8 @@ class SortieController extends AbstractController
     public function deleteSortie(EntityManagerInterface $em, Sortie $sortie, EtatRepository $etat, SortiesService $sortiesService) : Response
     {
 
-        if($sortiesService->verifSuppressionSortie($sortie))
+        if($sortiesService->verifSuppressionSortie($sortie, $this->getUser()))
         {
-
-            //dd("test");
-
             $em->beginTransaction();
             try {
 
@@ -192,8 +195,6 @@ class SortieController extends AbstractController
             } catch (\Exception $e) {
                 $em->rollBack();
                 var_dump($e->getMessage());
-
-
             }
             return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
         }

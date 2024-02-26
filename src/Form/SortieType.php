@@ -29,32 +29,43 @@ class SortieType extends AbstractType
             ->add('nom',TextType::class, [
                 'label' => 'Nom',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
             ])
             ->add('dateHeureDebut',DateTimeType::class, [
                 'label' => 'Date et Heure de début',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
             ->add('duree',NumberType::class, [
                 'label' => 'Duree (En minutes)',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
             ->add('dateLimiteInscription',DateTimeType::class, [
                 'label' => 'Date et Heure limite d\'inscription',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
             ->add('nbInscriptionsMax',NumberType::class, [
                 'label' => 'Nombre d\'inscriptions maximales',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
             ->add('infosSortie', TextareaType::class, [
                 'label' => 'Détail de la sortie',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'attr' => ['class' => 'border-2 border-slate-400 ml-2 rounded-lg']
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
             ->add('AjouterLieu', SubmitType::class, [
                 'label' => 'Ajouter un lieu manuelement',
@@ -77,8 +88,9 @@ class SortieType extends AbstractType
                 $builder->add('lieu', LieuType::class, [
                     'label' => 'Lieu',
                     'row_attr' => ['class' => 'my-1 flex flex-col'],
-                    'attr' => ['class' => 'border-2 border-slate-400 ml-2 px-5 rounded-lg'],
-                    'inherit_data' => false,
+                    'label_attr' => ['class' => ' text-gray-600'],
+                    'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+                    ,'inherit_data' => false,
 
                 ]);
 
@@ -95,7 +107,9 @@ class SortieType extends AbstractType
                         return $lieuRepository->createQueryBuilder('l');
                     },
                     'row_attr' => ['class' => 'my-1 flex flex-col'],
-                    'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
+                    'label_attr' => ['class' => ' text-gray-600'],
+                    'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
                 ]);
 
             }
@@ -108,7 +122,7 @@ class SortieType extends AbstractType
                     'row_attr' => [
                         'class' => 'w-fit mx-auto  flex flex-col'
                     ],
-                    'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
+                    'attr' => ['class' => 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 mt-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800']
                 ])
                 ;
             }
@@ -119,7 +133,7 @@ class SortieType extends AbstractType
                     'row_attr' => [
                         'class' => 'w-fit mx-auto  flex flex-col'
                     ],
-                    'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg']
+                    'attr' => ['class' => 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 mt-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800']
                 ])
                 ;
             }

@@ -51,9 +51,7 @@ class EditParticipantByAdminType extends AbstractType
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nom'
-            ])
-
-            ->add('Valider', SubmitType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -258,7 +258,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/site/{site}', name: 'app_sorties_par_sites',defaults: ['site'=> 'Rennes'])]
+    #[Route('/campus/{site}', name: 'app_sorties_par_sites',defaults: ['site'=> 'Nantes'])]
     public function sortiesBySite(?string $site ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
         $sorties = $sortieRepository->findBy([ 'site' => $siteRepository->findOneBy(['nom' => $site])]);

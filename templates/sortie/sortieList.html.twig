@@ -21,7 +21,7 @@
             </li>
             {% for site in sites %}
             <li>
-                <a href="/{{ site.nom }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ site.nom }}</a>
+                <a href="{{ path('app_sorties_par_sites', {'site': site.nom}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ site.nom }}</a>
             </li>
             {% endfor %}
         </ul>

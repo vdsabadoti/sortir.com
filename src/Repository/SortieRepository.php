@@ -23,11 +23,21 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findFilteredByState(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.etat = 1 OR s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function search(string $search): array
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.nom LIKE :search')
+            ->where('s.nom LIKE :search')
             ->setParameter('search',"%".$search."%")
+            ->andWhere('s.etat = 1 OR s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6')
             ->getQuery()
             ->getResult()
         ;
@@ -35,6 +45,7 @@ class SortieRepository extends ServiceEntityRepository
     public function findParticipe(Participant $participant):array
     {
         return $this->createQueryBuilder('s')
+            ->andWhere('s.etat = 1 OR s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6')
             ->join('s.participants', 'p', 'WITH', 'p = :participant')
             ->setParameter('participant', $participant)
             ->getQuery()

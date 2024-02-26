@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
@@ -27,11 +26,11 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(message: 'Vous devez mettre un nom')]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today')]
+    #[Assert\GreaterThan('today UTC', message: 'La date de debut doit etre supérieure a aujourd\'hui')]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
     #[ORM\Column(nullable: true)]
@@ -39,7 +38,8 @@ class Sortie
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\GreaterThan('today')]
+    #[Assert\LessThan(propertyPath: 'dateHeureDebut', message: 'la date limite d\' insctiption doit etre inférieure a la date de debuts')]
+    #[Assert\GreaterThan('today UTC', message: ' La date d\'inscription doit etre supérieure a aujourd\'hui')]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
     #[ORM\Column(nullable: true)]
@@ -172,7 +172,7 @@ class Sortie
     {
         if (!$this->participants->contains($participant)) {
             $this->participants->add($participant);
-            $participant->addSortie($this);
+            $participant->addSorty($this);
         }
 
         return $this;
@@ -181,7 +181,7 @@ class Sortie
     public function removeParticipant(Participant $participant): static
     {
         if ($this->participants->removeElement($participant)) {
-            $participant->removeSortie($this);
+            $participant->removeSorty($this);
         }
 
         return $this;

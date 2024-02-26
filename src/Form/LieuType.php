@@ -20,32 +20,40 @@ class LieuType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class, [
-                'label' => 'Nom',
-                'attr' => ['class' => 'text-lg font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500']
+            ->add('nom',TextType::class, [
+                'row_attr' => ['class' => 'my-1 flex flex-col'],
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
-            ->add('rue', TextType::class, [
-                'label' => 'Rue',
-                'attr' => ['class' => 'text-lg font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500']
+            ->add('rue',TextType::class, [
+                'row_attr' => ['class' => 'my-1 flex flex-col'],
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
-            ->add('latitude', NumberType::class,[
-                'label' => 'Latitude',
-                'attr' => ['class' => 'text-lg font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500']
+            ->add('latitude',NumberType::class, [
+                'row_attr' => ['class' => 'my-1 flex flex-col'],
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
-            ->add('longitude', NumberType::class,[
-                'label' => 'Longitude',
-                'attr' => ['class' => 'text-lg font-medium bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500']
+            ->add('longitude',NumberType::class, [
+                'row_attr' => ['class' => 'my-1 flex flex-col'],
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+
             ])
             ->add('ville', EntityType::class, [
+                'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'class' => Ville::class,
                 'choice_label' => 'nom',
-                'placeholder' => 'Choisir une ville',
-                'required' => 'true',
-                'attr' => ['class' => 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'],
                 'query_builder' => function(VilleRepository $villeRepository) {
                     return $villeRepository->createQueryBuilder('v');
                 },
-              ])
+                'label_attr' => ['class' => ' text-gray-600'],
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent  appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer']
+            ])
         ;
     }
 

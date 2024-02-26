@@ -269,5 +269,49 @@ class SortieController extends AbstractController
             'sites' => $sites,
         ]);
     }
+    #[Route('/inscrit/{id}', name: 'app_sorties_inscrit')]
+    public function inscrire(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        $sortie->addParticipant($this->getUser());
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $sorties = $sortieRepository->findAll();
+        $sites = $siteRepository->findAll();
+
+        return $this->render('sortie/sortieList.html.twig', [
+            'sorties' => $sorties,
+            'sites' => $sites,
+        ]);
+    }
+    #[Route('/desinscrit/{id}', name: 'app_sorties_desinscrit')]
+    public function desinscrire(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        $sortie->removeParticipant($this->getUser());
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $sorties = $sortieRepository->findAll();
+        $sites = $siteRepository->findAll();
+
+        return $this->render('sortie/sortieList.html.twig', [
+            'sorties' => $sorties,
+            'sites' => $sites,
+        ]);
+    }
+    #[Route('/detail/{id}', name: 'app_sorties_detail')]
+    public function detail(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        $sites = $siteRepository->findAll();
+
+        return $this->render('sortie/detail.html.twig', [
+            'sortie' => $sortie,
+            'sites' => $sites,
+        ]);
+    }
 
 }

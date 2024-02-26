@@ -78,6 +78,7 @@
                                 <td class="px-4 py-3">{{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}</td>
                                 <td class="px-4 py-3">{% if app.user not in sortie.participants %} <a href="{{ path("app_inscribe",{'id' : sortie.id}) }}">s'inscrire</a> {% else %} <a href="{{ path("app_desisted",{'id' : sortie.id}) }}">ce désinscrire</a> {%endif%}</td>
                                 <td class="px-4 py-3">{% if app.user == sortie.organisateur %}c'est mon activitée{%endif%}</td>
+                                <td class="px-4 py-3"><a href="{{ path("app_sorties_detail",{'id' : sortie.id}) }}">details</a></td>
 
                             </tr>
                         {% endfor %}

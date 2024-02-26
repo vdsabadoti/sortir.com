@@ -10,7 +10,7 @@
         </div>
 
 
-        <div class="row-span-2 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
+        <div class="row-span-2 w-full sm:w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
             <div class="row-start-2">
             <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les sites</h2>
             </div>
@@ -21,11 +21,11 @@
                     </div>
                     <div class="row-start-4 inline-flex justify-between">
                         <div>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Rechercher</button>
                         </div>
                         <div>
                             <a class="px-6" href="{{ path('app_site_new') }}">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Créer
                             </button>
                         </a>
@@ -35,8 +35,8 @@
         </div>
     </div>
 
-    <div class="container mx-auto grid grid-rows-2 gap-4 flex items-center hidden md:block">
-        <div class="row-span-1 w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div class="container w-4/5 mx-auto grid grid-rows-2 gap-4 flex items-center hidden md:block">
+        <div class="row-span-1 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div class="flex items-center">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -52,7 +52,7 @@
                             <td class="px-6 py-4">{{ site.nom }}</td>
                             <td class="px-6 py-4">
                                 <a href="{{ path('app_site_edit', {'id': site.id}) }}" class="inline-flex">
-                                    Modifier <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Supprimer" width="30" height="30">
+                                    Modifier
                                 </a>
                             </td>
                             <td>
@@ -74,11 +74,11 @@
 
 
     {% for site in sites %}
-        <div class="container mx-auto w-4/5 gap-4 md:hidden">
+        <div class="container mx-auto w-full gap-4 md:hidden">
             <div class="bg-white px-8 py-4 rounded-lg border border-gray-200 shadow">
                 <div class="flex items-center grid grid-rows-1 space-y-1">
                     <div class="row-span-1 inline-flex justify-between">
-                        <div class="flex text-xl font-medium">
+                        <div class="flex text-md font-medium mt-2">
                             {{ site.nom }}
                         </div>
                         <div class="text-gray-500 inline-flex space-x-8">

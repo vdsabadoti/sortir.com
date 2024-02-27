@@ -137,7 +137,7 @@ class SortieController extends AbstractController
 
                     // On persiste le lieu
                     $sortie->getLieu()->setActif(true); // On dit que le lieu est actif
-
+                    $lieuService->definirCoordonnees($sortie->getLieu());
                     $em->persist($sortie->getLieu());
                     $em->flush();
 

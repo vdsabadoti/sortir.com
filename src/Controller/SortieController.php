@@ -14,12 +14,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 class SortieController extends AbstractController
 {
 
     #[Route('/sortie/create', name:'app_sortie_create')]
+    #[IsGranted('ROLE_USER')]
     public function create(EntityManagerInterface $em, Request $request, EtatRepository $e) : Response
     {
 
@@ -84,6 +86,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_USER')]
     public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService) : Response
     {
 
@@ -162,6 +165,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/cancel/{id}', name: 'app_sortie_cancel', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_USER')]
     public function cancelSortie(EntityManagerInterface $em, Sortie $sortie, EtatRepository $etat, SortiesService $sortiesService) : Response
     {
 
@@ -182,6 +186,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/delete/{id}', name: 'app_sorties_delete', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_USER')]
     public function deleteSortie(EntityManagerInterface $em, Sortie $sortie, EtatRepository $etat, SortiesService $sortiesService) : Response
     {
 
@@ -209,6 +214,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
+    #[IsGranted('ROLE_USER')]
     public function index(SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
         $sorties = $sortieRepository->findFilteredByState();
@@ -221,6 +227,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/mesSorties', name: 'app_mes_sorties')]
+    #[IsGranted('ROLE_USER')]
     public function mesSorties(SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
         $sorties = $sortieRepository->findBy(['organisateur' => $this->getUser()]);
@@ -232,14 +239,15 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/jeParticipe', name: 'app_mes_participation')]
+    #[IsGranted('ROLE_USER')]
     public function mesParticipation(SortieRepository $sortieRepository,SiteRepository $siteRepository,ParticipantRepository $participantRepository): Response
     {
-        $user = $this->getUser();
-        $participant = $participantRepository->findOneBy(['email'=>$user->getUserIdentifier()]);
-        $sorties = $participant->getSorties();
+        //$user = $this->getUser();
+        //$participant = $participantRepository->findOneBy(['email'=>$user->getUserIdentifier()]);
+        //$sorties = $participant->getSorties();
 
 
-        //$sorties = $sortieRepository->findParticipe($this->getUser());
+        $sorties = $sortieRepository->findParticipe($this->getUser());
         $sites = $siteRepository->findAll();
 
         return $this->render('sortie/sortieList.html.twig', [
@@ -248,6 +256,7 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/search', name: 'app_search',methods: 'post')]
+    #[IsGranted('ROLE_USER')]
     public function search(Request $request ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
         $sorties = $sortieRepository->search($request->get('search'));
@@ -260,6 +269,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/campus/{site}', name: 'app_sorties_par_sites',defaults: ['site'=> 'Nantes'])]
+    #[IsGranted('ROLE_USER')]
     public function sortiesBySite(?string $site ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
         $sorties = $sortieRepository->findBy([ 'site' => $siteRepository->findOneBy(['nom' => $site])]);
@@ -271,6 +281,7 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/inscrit/{id}', name: 'app_sorties_inscrit')]
+    #[IsGranted('ROLE_USER')]
     public function inscrire(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
@@ -287,6 +298,7 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/desinscrit/{id}', name: 'app_sorties_desinscrit')]
+    #[IsGranted('ROLE_USER')]
     public function desinscrire(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
@@ -303,6 +315,7 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/detail/{id}', name: 'app_sorties_detail')]
+    #[IsGranted('ROLE_USER')]
     public function detail(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository,EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
@@ -313,6 +326,18 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
             'sites' => $sites,
         ]);
+    }
+
+    #[Route('/annuler/{id}', name: 'app_sorties_annuler')]
+    public function annuler(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository, EtatRepository $etatRepository,EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        $sortie->setEtat($etatRepository->find(6));
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_home');
     }
 
 }

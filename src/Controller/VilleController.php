@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/ville')]
+#[IsGranted('ROLE_USER')]
 class VilleController extends AbstractController
 {
     #[Route('/', name: 'app_ville_index', methods: ['GET', 'POST'])]

@@ -79,7 +79,11 @@
                                 <td class="px-4 py-3">{% if app.user not in sortie.participants %} <a href="{{ path("app_inscribe",{'id' : sortie.id}) }}">s'inscrire</a> {% else %} <a href="{{ path("app_desisted",{'id' : sortie.id}) }}">ce désinscrire</a> {%endif%}</td>
                                 <td class="px-4 py-3">{% if app.user == sortie.organisateur %}c'est mon activitée{%endif%}</td>
                                 <td class="px-4 py-3"><a href="{{ path("app_sorties_detail",{'id' : sortie.id}) }}">details</a></td>
-
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    {% if sortie.etat.id <6 %}
+                                    <td class="px-4 py-3"><a href="{{ path("app_sorties_annuler",{'id' : sortie.id}) }}">annuler</a></td>
+                                    {% endif%}
+                                {% endif %}
                             </tr>
                         {% endfor %}
                         </tbody>

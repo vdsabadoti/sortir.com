@@ -54,7 +54,7 @@
                             <a href="{{ path("app_profile_detail_id",{'id' : participant.id}) }}"><p class="mb-4 font-medium">{{ participant.prenom }} {{ participant.nom }}</p></a>
                         {% endfor %}
 
-                    <p class="mb-4 font-medium">{% if app.user not in sortie.participants %} <a href="{{ path("app_inscribe",{'id' : sortie.id}) }}">s'inscrire</a> {% else %} <a href="{{ path("app_desisted",{'id' : sortie.id}) }}">ce désinscrire</a> {%endif%}</p>
+
 
                     {% if sortie.etat.id <6 %}
                         {% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}

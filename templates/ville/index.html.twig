@@ -9,7 +9,7 @@
         <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Gérer les villes</h1>
     </div>
 
-    <div class="row-span-2 w-full sm:w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
+    <div class="row-span-2 w-full mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
         <div class="row-start-2">
             <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les villes</h2>
         </div>
@@ -26,11 +26,8 @@
                         </button>
                     </a>
             </div>
-
         </form>
-
     </div>
-
 </div>
 
     <div class="container w-full mx-auto grid grid-rows-2 gap-4 flex items-center hidden sm:block">
@@ -41,7 +38,9 @@
                         <tr>
                             <th scope="col" class="px-6 py-3">Nom</th>
                             <th scope="col" class="px-6 py-3">Code Postal</th>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <th scope="col" class="px-6 py-3">Actions</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -49,12 +48,15 @@
                         <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                             <td class="px-6 py-4">{{ ville.nom }}</td>
                             <td class="px-6 py-4">{{ ville.codePostal }}</td>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <td class="px-6 py-4">
+
                                 <a href="{{ path('app_ville_edit', {'id': ville.id}) }}">Modifier</a>
                             </td>
                             <td>
                                 {{ include('ville/_delete_form.html.twig') }}
                             </td>
+                            {% endif %}
                         </tr>
                     {% else %}
                         <tr>
@@ -67,47 +69,33 @@
         </div>
     </div>
 
+    <div id="accordion-collapse" data-accordion="collapse" class="sm:hidden">
         {% for ville in villes %}
-            <div class="container mx-auto w-full gap-4 md:hidden">
-                <div class="bg-white px-8 py-2 rounded-lg border border-gray-200 shadow">
-                    <div class="flex items-center grid grid-rows-3 m-2">
-                            <div class="row-span-2 inline-flex justify-between">
-                                <div class="flex text-lg font-medium mt-2">
-                                    {{ ville.nom }}
-                                </div>
-                                <div class="flex text-gray-500 inline-flex space-x-8">
-                                    <div>
-                                        <a href="{{ path('app_ville_edit', {'id': ville.id}) }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Supprimer" width="30" height="30">
-                                        </a>
-                                    </div>
-                                    <div>
-                                        {{ include('ville/_delete_form.html.twig') }}
-                                    </div>
-                                </div>
-                            </div>
-                        <div class="row-span-1">
-                            <div class="flex text-sm font-medium">
-                                Code Postal : {{ ville.codePostal }}
-                            </div>
+            <h2 id="accordion-collapse-heading-{{ ville.id }}">
+                <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border  border-gray-200 rounded-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-{{ ville.id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ ville.id }}">
+                    <span>{{ ville.nom }}</span>
+                </button>
+            </h2>
+            <div id="accordion-collapse-body-{{ ville.id }}" class="hidden" aria-labelledby="accordion-collapse-heading-{{ ville.id }}">
+                <div class="w-full p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900 inline-flex justify-between">
+                    <div class="text-gray-500 inline-flex justify-between px-4 space-x-8">
+                        <div class="">Code postal: </div>
+                        <div class="">{{ ville.codePostal }}</div>
+                    </div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <div class="text-gray-500 inline-flex justify-between px-4 space-x-8">
+                        <div>
+                            <a href="{{ path('app_ville_edit', {'id': ville.id}) }}">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Supprimer" width="30" height="30">
+                            </a>
+                        </div>
+                        <div>
+                            {{ include('ville/_delete_form.html.twig') }}
                         </div>
                     </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="container mx-auto w-4/5 gap-4 sm:hidden">
-                <div class="bg-white px-8 py-4 rounded-lg border border-gray-200 shadow">
-                    <div class="flex items-center grid grid-rows-1 space-y-1">
-                        <div class="row-span-1 inline-flex justify-between">
-                            <div class="flex text-xl font-medium">
-                                Aucune ville trouvée
-                            </div>
-                        </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
-
-
-
-</div>
+    </div>
 {% endblock %}

@@ -6,6 +6,7 @@
 # Set the timezone
 parameters:
     timezone: '%env(APP_TIMEZONE)%'
+    poster_dir: 'assets/img/'
 
 services:
     # default configuration for services in *this* file

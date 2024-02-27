@@ -234,12 +234,12 @@ class SortieController extends AbstractController
     #[Route('/jeParticipe', name: 'app_mes_participation')]
     public function mesParticipation(SortieRepository $sortieRepository,SiteRepository $siteRepository,ParticipantRepository $participantRepository): Response
     {
-        $user = $this->getUser();
-        $participant = $participantRepository->findOneBy(['email'=>$user->getUserIdentifier()]);
-        $sorties = $participant->getSorties();
+        //$user = $this->getUser();
+        //$participant = $participantRepository->findOneBy(['email'=>$user->getUserIdentifier()]);
+        //$sorties = $participant->getSorties();
 
 
-        //$sorties = $sortieRepository->findParticipe($this->getUser());
+        $sorties = $sortieRepository->findParticipe($this->getUser());
         $sites = $siteRepository->findAll();
 
         return $this->render('sortie/sortieList.html.twig', [
@@ -313,6 +313,18 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
             'sites' => $sites,
         ]);
+    }
+
+    #[Route('/annuler/{id}', name: 'app_sorties_annuler')]
+    public function annuler(?int $id ,SortieRepository $sortieRepository,SiteRepository $siteRepository, EtatRepository $etatRepository,EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        $sortie->setEtat($etatRepository->find(6));
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('app_home');
     }
 
 }

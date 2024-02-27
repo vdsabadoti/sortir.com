@@ -54,6 +54,7 @@ class SortieController extends AbstractController
                 $sortie->setSite($sortie->getOrganisateur()->getSite());
 
                 // On persiste le lieu
+                $sortie->getLieu()->setActif(true);
                 $em->persist($sortie->getLieu());
                 $em->flush();
 
@@ -127,8 +128,8 @@ class SortieController extends AbstractController
                 $em->beginTransaction();
                 try {
 
-                    //dd($sortie->getLieu());
                     // On persiste le lieu
+                    $sortie->getLieu()->setActif(true);
                     $em->persist($sortie->getLieu());
                     $em->flush();
 

@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\RegistrationByExcelType;
 use App\Form\RegistrationFormType;
+use App\Services\RegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RegistrationController extends AbstractController
 {
@@ -43,4 +47,39 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    #[Route('/registerByExcel', name: 'app_register_by_excel')]
+    #[IsGranted('ROLE_CONTRIB')]
+    public function registerByExcel(Request $request, RegistrationService $registrationService,EntityManagerInterface $entityManager) : Response
+    {
+
+        $form = $this->createForm(RegistrationByExcelType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            if ($form->get('fichierExcel')->getData() instanceof UploadedFile) {
+
+                $fichierExcel = $form->get('fichierExcel')->getData();
+
+                $users = $registrationService->readUserFromExcel($fichierExcel);
+
+                foreach ($users as $user) {
+                    $entityManager->persist($user);
+                }
+
+                $entityManager->flush();
+
+            }
+        }
+
+
+
+
+        return $this->render('registration/register-by-excel.html.twig', [
+                'form' => $form
+        ]);
+    }
+
 }

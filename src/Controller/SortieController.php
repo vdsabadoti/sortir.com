@@ -87,7 +87,90 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER')]
-    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService) : Response
+    public function update(Sortie $sortie, EntityManagerInterface $em, Request $request, SortiesService $sortiesService, EtatRepository $etatRepository) : Response
+    {
+
+        if($sortiesService->verifModificationSortie($sortie, $this->getUser()))
+        {
+            /* Si l'utilisateur veut ajouter un lieu on lui mets le formulaire de creation de lieu
+                       tout en supprimant de l'objet transféré le lieu selectionner afin que les champs du nouveau formulaire soient vides
+                    */
+            if(isset($request->get('sortie')['AjouterLieu']))
+            {
+
+                $form = $this->createForm(SortieType::class, $sortie, [
+                    'addLieu' => isset($request->get('sortie')['AjouterLieu']),
+                    'InsererLieu' => isset($request->get('sortie')['InsererLieu'])
+                ]);
+
+                $form->get('lieu')->setData(null);
+
+                $form->handleRequest($request);
+
+                return $this->render('sortie/creer.html.twig', [
+                    'form' => $form
+                ]);
+            }
+
+
+            $form = $this->createForm(SortieType::class, $sortie, [
+                'addLieu' => isset($request->get('sortie')['AjouterLieu']),
+                'InsererLieu' => isset($request->get('sortie')['InsererLieu'])
+            ]);
+
+            // On resupprime le lieu de la liste déroulante afin de laisser place au nouveau afin de faire une insertion
+            if(isset($request->get('sortie')['InsererLieu']))
+            {
+                $form->get('lieu')->setData(null);
+            }
+
+            $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid())
+            {
+                $em->beginTransaction();
+                try {
+
+                    //On met à jour l'état à OUVERTE
+                    $sortie->setEtat($etatRepository->find(2));
+
+                    // On persiste le lieu
+                    $sortie->getLieu()->setActif(true);
+                    $em->persist($sortie->getLieu());
+                    $em->flush();
+
+                    // On persiste la sortie
+                    $em->persist($sortie);
+                    $em->flush();
+
+                    $em->commit();
+                } catch (\Exception $e) {
+                    $em->rollBack();
+                    var_dump($e->getMessage());
+                    return $this->render('sortie/update.html.twig', [
+                        'form' => $form,
+                        'sortie' => $sortie
+                    ]);
+                }
+
+                $this->addFlash('success', 'Modification effectuée');
+                return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+            }
+
+
+            return $this->render('sortie/update.html.twig', [
+                'form' => $form
+            ]);
+        }
+
+        $this->addFlash('error', 'Vous ne pouvez pas modifier une sortie deja publiée');
+        return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+
+    }
+
+    #[Route('/sortie/publier/{id}', name:'app_sortie_publier', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_USER')]
+    public function publish(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService) : Response
     {
 
         if($sortiesService->verifModificationSortie($sortie, $this->getUser()))
@@ -139,6 +222,8 @@ class SortieController extends AbstractController
                     // On persiste la sortie
                     $em->persist($sortie);
                     $em->flush();
+
+
 
                     $em->commit();
                 } catch (\Exception $e) {

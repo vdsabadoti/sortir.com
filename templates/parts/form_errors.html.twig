@@ -1,0 +1,8 @@
+
+{% block form_errors %}
+
+        {% for error in errors %}
+            <div class="w-full rounded border-red-2 text-white bg-red-600">{{ error.message }}</div>
+        {% endfor %}
+
+{% endblock %}

@@ -9,7 +9,7 @@
             <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Gérer les lieux</h1>
         </div>
 
-        <div class="row-span-4 w-full sm:w-4/5 mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
+        <div class="row-span-4 w-full mx-auto p-6 self-auto bg-white border border-gray-200 rounded-lg shadow">
             <div class="row-start-2">
                 <h2 class="max-w-sm mb-2 text-4xl font-bold tracking-tight text-gray-900">Filtrer les lieux</h2>
             </div>
@@ -28,9 +28,9 @@
                 </div>
                 <div class="row-start-4">
                     <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="desactif" class="sr-only peer">
+                        <input type="checkbox" name="actif" class="sr-only peer">
                         <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Desactif</span>
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Actif</span>
                     </label>
                 </div>
                 <div class="row-start-6 inline-flex">
@@ -96,70 +96,49 @@
         </div>
     </div>
 
-
+    <div id="accordion-collapse" data-accordion="collapse" class="sm:hidden">
     {% for lieu in lieux %}
-    <div class="mx-auto w-full gap-4 sm:hidden">
-        <div class="w-full bg-white p-8 rounded-lg border border-gray-200 shadow">
-            <div class="flex items-center grid grid-rows-4 space-y-1">
-                <div class="row-span-1 inline-flex justify-between">
-                    <div class="flex text-2xl font-medium">
-                        {{ lieu.nom }}
-                    </div>
-                    {% if (lieu.actif == true) %}
+        <h2 id="accordion-collapse-heading-{{ lieu.id }}">
+            <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border  border-gray-200 rounded-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-{{ lieu.id }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ lieu.id }}">
+                <span>{{ lieu.nom }}</span>
+                {% if (lieu.actif == true) %}
+                    <div>
                         <div>
+                            <span class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Actif</span>
+                        </div>
+                    </div>
+                {% else %}
+                    <div>
+                        <div>
+                            <span class="bg-red-100 text-red-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Desactif</span>
+                        </div>
+                    </div>
+                {%  endif %}
+            </button>
+        </h2>
+        <div id="accordion-collapse-body-{{ lieu.id }}" class="hidden" aria-labelledby="accordion-collapse-heading-{{ lieu.id }}">
+            <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                        <div class="text-xs font-medium">Adresse: </div>
+                        <div class="text-gray-500">{{ lieu.rue }}</div>
+                        <div class="text-xs font-medium">Ville: </div>
+                        <div class="text-gray-500">{{ lieu.ville.nom }}</div>
+                        <div class="w-full text-gray-500 inline-flex justify-between px-4">
                             <div>
-                                <span class="bg-green-100 text-green-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Actif</span>
+                                <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Supprimer" width="30" height="30">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="{{ path('app_lieu_switch', {'id': lieu.id}) }}">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1/1228.png" alt="" width="30" height="30">
+                                </a>
+                            </div>
+                            <div>
+                                {{ include('lieu/_delete_form.html.twig') }}
                             </div>
                         </div>
-                    {% else %}
-                        <div>
-                            <div>
-                                <span class="bg-red-100 text-red-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Desactif</span>
-                            </div>
-                        </div>
-                    {%  endif %}
-                </div>
-                <div class="row-span-2">
-                    <div class="text-xs font-medium">Adresse: </div>
-                    <div class="text-gray-500">{{ lieu.rue }}</div>
-                    <div class="text-xs font-medium">Ville: </div>
-                    <div class="text-gray-500">{{ lieu.ville.nom }}</div>
-                </div>
-                <div class="row-span-1">
-                    <div class="w-full text-gray-500 inline-flex justify-between px-4">
-                        <div>
-                            <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Edit_icon_%28the_Noun_Project_30184%29.svg/1024px-Edit_icon_%28the_Noun_Project_30184%29.svg.png" alt="Supprimer" width="30" height="30">
-                            </a>
-                        </div>
-                        <div>
-                            <a href="{{ path('app_lieu_switch', {'id': lieu.id}) }}">
-                                <img src="https://cdn-icons-png.flaticon.com/512/1/1228.png" alt="" width="30" height="30">
-                            </a>
-                        </div>
-                        <div>
-                            {{ include('lieu/_delete_form.html.twig') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% else %}
-        <div class="container mx-auto w-4/5 gap-4 md:hidden">
-            <div class="bg-white px-8 py-4 rounded-lg border border-gray-200 shadow">
-                <div class="flex items-center grid grid-rows-1 space-y-1">
-                    <div class="row-span-1 inline-flex justify-between">
-                        <div class="flex text-xl font-medium">
-                            Aucun lieu trouvé
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     {% endfor %}
-
-
-
-</div>
+    </div>
 {% endblock %}

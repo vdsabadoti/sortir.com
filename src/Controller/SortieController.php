@@ -8,6 +8,7 @@ use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
+use App\Services\LieuService;
 use App\Services\SortiesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ class SortieController extends AbstractController
 {
 
     #[Route('/sortie/create', name:'app_sortie_create')]
-    public function create(EntityManagerInterface $em, Request $request, EtatRepository $e) : Response
+    public function create(EntityManagerInterface $em, Request $request, EtatRepository $e, LieuService $lieuService) : Response
     {
 
         $sortie = new Sortie();
@@ -37,8 +38,11 @@ class SortieController extends AbstractController
 
         //dd($form);
 
-        if(isset($request->get('sortie')['AjouterLieu']))
+        if(isset($request->get('sortie')['AjouterLieu']) || isset($request->get('sortie')['SelectionnerLieuxDisponibles']) )
         {
+
+            $form->clearErrors();
+
             return $this->render('sortie/creer.html.twig', [
                 'form' => $form
             ]);
@@ -54,7 +58,8 @@ class SortieController extends AbstractController
                 $sortie->setSite($sortie->getOrganisateur()->getSite());
 
                 // On persiste le lieu
-                $sortie->getLieu()->setActif(true);
+                $sortie->getLieu()->setActif(true); // On dit que le lieu est actif
+                $lieuService->definirCoordonnees($sortie->getLieu());
                 $em->persist($sortie->getLieu());
                 $em->flush();
 
@@ -84,15 +89,15 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
-    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService) : Response
+    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService, LieuService $lieuService) : Response
     {
 
-        if($sortiesService->verifModificationSortie($sortie, $this->getUser()))
+        if($sortiesService->verifModificationSortie($sortie, $this->getUser()) )
         {
             /* Si l'utilisateur veut ajouter un lieu on lui mets le formulaire de creation de lieu
                        tout en supprimant de l'objet transféré le lieu selectionner afin que les champs du nouveau formulaire soient vides
                     */
-            if(isset($request->get('sortie')['AjouterLieu']))
+            if(isset($request->get('sortie')['AjouterLieu']) || isset($request->get('sortie')['SelectionnerLieuxDisponibles']))
             {
 
                 $form = $this->createForm(SortieType::class, $sortie, [
@@ -103,6 +108,8 @@ class SortieController extends AbstractController
                 $form->get('lieu')->setData(null);
 
                 $form->handleRequest($request);
+
+                $form->clearErrors();
 
                 return $this->render('sortie/creer.html.twig', [
                     'form' => $form
@@ -129,7 +136,8 @@ class SortieController extends AbstractController
                 try {
 
                     // On persiste le lieu
-                    $sortie->getLieu()->setActif(true);
+                    $sortie->getLieu()->setActif(true); // On dit que le lieu est actif
+
                     $em->persist($sortie->getLieu());
                     $em->flush();
 

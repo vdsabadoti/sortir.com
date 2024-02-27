@@ -30,11 +30,9 @@ class Lieu
     private ?string $rue = null;
 
     #[ORM\Column(nullable: true)]
-
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
-
     private ?float $longitude = null;
 
     #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: Sortie::class)]

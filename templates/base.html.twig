@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+    {% endblock %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
 
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
@@ -27,37 +28,40 @@
         <div class="flex items-center">
             <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
 
-                <li>
-                    <a href="{{ path('app_home') }}" class="text-gray-900 dark:text-white hover:underline"
-                       aria-current="page">Home</a>
-                </li>
 
-                    {% if is_granted('IS_AUTHENTICATED') %}
-                        <li><a href="{{ path('app_sortie_create') }}">Creer une sortie</a></li>
-                        <li><a href="{{ path('app_logout') }}">Log out</a></li>
-                    {% else %}
-                        <li><a href="{{ path('app_login') }}">Log in</a></li>
-                        <li><a href="{{ path('app_register') }}">Register in</a></li>
-                    {% endif %}
+                {% if is_granted('IS_AUTHENTICATED') %}
+                    <li>
+                        <a href="{{ path('app_home') }}" class="text-gray-900 dark:text-white hover:underline"
+                           aria-current="page">Home</a>
+                    </li>
+                    <li><a href="{{ path('app_sortie_create') }}">Creer une sortie</a></li>
+                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ path('app_login') }}">Connection</a></li>
+                    <li><a href="{{ path('app_register') }}">Inscription</a></li>
+                {% endif %}
 
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path ('app_users_list') }}">Users list</a></li>
+                    <li><a href="{{ path ('app_users_list') }}">Liste utilisateurs</a></li>
+                    <li><a href="{{ path ('app_lieu_index') }}">Lieu</a></li>
+                    <li><a href="{{ path ('app_site_index') }}">Site</a></li>
                 {% endif %}
 
                 {% if is_granted('ROLE_USER') %}
+                    <li><a href="{{ path ('app_ville_index') }}">Ville</a></li>
                     <li><a href="{{ path ('app_profile_detail') }}">Profile</a></li>
                 {% endif %}
                 <li>
-                    <a href="" class="text-gray-900 dark:text-white hover:underline"
+                    <a href="{{ path ('app_about_us') }}" class="text-gray-900 dark:text-white hover:underline"
                        aria-current="page">About us</a>
                 </li>
 
-                </ul>
-            </div>
+            </ul>
         </div>
-    </nav>
-        {% include "_toasts.html.twig" %}
-        {% block body %}{% endblock %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    </body>
+    </div>
+</nav>
+{% include "_toasts.html.twig" %}
+{% block body %}{% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+</body>
 </html>

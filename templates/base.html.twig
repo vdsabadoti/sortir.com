@@ -33,31 +33,32 @@
                         </a>
                     </div>
 
-
+                <div class="hidden w-full md:block md:w-auto md:inline-flex" id="navbar-dropdown">
+                    <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-100 md:px-6 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-gray-100 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <li>
-                        <a href="{{ path('app_home') }}" class="text-gray-900 dark:text-white hover:underline"
+                        <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path('app_home') }}" class="text-gray-900 dark:text-white hover:underline"
                            aria-current="page">Home</a>
                     </li>
-                    <li><a href="{{ path('app_sortie_create') }}">Creer une sortie</a></li>
-                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path('app_sortie_create') }}">Creer une sortie</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path('app_logout') }}">Déconnexion</a></li>
                 {% else %}
-                    <li><a href="{{ path('app_login') }}">Connection</a></li>
-                    <li><a href="{{ path('app_register') }}">Inscription</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path('app_login') }}">Connection</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path('app_register') }}">Inscription</a></li>
                 {% endif %}
 
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path ('app_users_list') }}">Liste utilisateurs</a></li>
-                    <li><a href="{{ path ('app_lieu_index') }}">Lieu</a></li>
-                    <li><a href="{{ path ('app_site_index') }}">Site</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_users_list') }}">Liste utilisateurs</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_lieu_index') }}">Lieu</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_site_index') }}">Site</a></li>
                 {% endif %}
 
                 {% if is_granted('ROLE_USER') %}
-                    <li><a href="{{ path ('app_ville_index') }}">Ville</a></li>
-                    <li><a href="{{ path ('app_profile_detail') }}">Profile</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_ville_index') }}">Ville</a></li>
+                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_profile_detail') }}">Profile</a></li>
                 {% endif %}
                 <li>
-                    <a href="{{ path ('app_about_us') }}" class="text-gray-900 dark:text-white hover:underline"
+                    <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_about_us') }}" class="text-gray-900 dark:text-white hover:underline"
                        aria-current="page">About us</a>
                 </li>
 

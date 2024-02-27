@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile index{% endblock %}
+
+{% block body %}
+
+
+    <section class="dark:bg-gray-900 sm:p-5">
+
+        <div class="mx-auto px-4 ">
+
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    <ul class="list-inside p-2">
+
+                        <li class="py-2">Email : {{ user.email }}</li>
+                        <li class="py-2">Prénom : {{ user.prenom }}</li>
+                        <li class="py-2">Nom : {{ user.nom }}</li>
+                        <li class="py-2">Téléphone : {{ user.telephone }}</li>
+                        <li class="py-2">Site : {{ user.site.nom }}</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <h1>Edit User</h1>
+
+
+    <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+
+        <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    {{ include('users_list/_form.html.twig', {'button_label': 'Update'}) }}
+
+                    {{ include('users_list/_delete_form.html.twig') }}
+
+                    <a href="{{ path('app_users_list') }}">Retour à la liste d'utilisateur</a>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </section>
+
+
+{% endblock %}

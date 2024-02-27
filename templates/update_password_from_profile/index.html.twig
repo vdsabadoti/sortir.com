@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UpdatePasswordFromProfileController{% endblock %}
+
+{% block body %}
+
+
+    <section class=" dark:bg-gray-900 p-3 sm:p-5">
+
+        <div class="p-4 ">
+
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+
+                <div class="p-4">
+
+                    {{ include('users_list/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+                    <a href="{{ path('app_profile_detail') }}">Retour au profil</a>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </section>
+
+
+{% endblock %}

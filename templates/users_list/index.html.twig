@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+
+
+
+    <section class=" dark:bg-gray-900 p-3 sm:p-5">
+
+        <div class="mx-auto px-4 lg:px-12">
+
+            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+
+                <div class="overflow-x-auto">
+
+                    <table class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">Id</th>
+                            <th scope="col" class="px-4 py-3">Email</th>
+                            <th scope="col" class="px-4 py-3">Prenom</th>
+                            <th scope="col" class="px-4 py-3">Nom</th>
+                            <th scope="col" class="px-4 py-3">Site</th>
+                            <th scope="col" class="px-4 py-3">Actif</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        {% for user in users %}
+                            <tr class="border-b dark:border-gray-700">
+                                <th scope="row"
+                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ user.id }}</th>
+                                <td class="px-4 py-3">{{ user.email }}</td>
+                                <td class="px-4 py-3">{{ user.prenom }}</td>
+                                <td class="px-4 py-3">{{ user.nom }}</td>
+                                <td class="px-4 py-3">{{ user.site.nom }}</td>
+
+                                {% if not user.actif %}
+
+                                    <td class="px-4 py-3">
+                                        <a href="{{ path('app_user_activate', {'id': user.id}) }}"
+                                           class="btn btn-lg btn-primary">Activer</a>
+                                    </td>
+
+
+                                {% endif %}
+
+                                {% if user.actif %}
+
+                                    <td class="px-4 py-3">
+                                        <a href="{{ path('app_user_desactivate', {'id': user.id}) }}"> Desactiver </a>
+                                    </td>
+
+
+                                {% endif %}
+
+                                <td class="px-4 py-3"><a href="{{ path('app_user_delete', {'id': user.id}) }}"> Supprimer</a></td>
+
+                                <td class="px-4 py-3">
+                                    <a href="{{ path ('app_edit_participant_by_admin', {'id': user.id}) }}">Editer </a>
+                                </td>
+
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>No Records found</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+{% endblock %}

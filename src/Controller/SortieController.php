@@ -148,6 +148,8 @@ class SortieController extends AbstractController
                     $em->persist($sortie);
                     $em->flush();
 
+
+
                     $em->commit();
                 } catch (\Exception $e) {
                     $em->rollBack();

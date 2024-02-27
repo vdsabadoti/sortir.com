@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Lieu;
-use App\Form\LieuType;
+use App\Form\LieuAdminType;
 use App\Repository\LieuRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +36,7 @@ class LieuController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $lieu = new Lieu();
-        $form = $this->createForm(LieuType::class, $lieu);
+        $form = $this->createForm(LieuAdminType::class, $lieu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,7 +55,7 @@ class LieuController extends AbstractController
     #[Route('/{id}/edit', name: 'app_lieu_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Lieu $lieu, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(LieuType::class, $lieu);
+        $form = $this->createForm(LieuAdminType::class, $lieu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

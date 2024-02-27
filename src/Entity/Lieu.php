@@ -44,7 +44,7 @@ class Lieu
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
 
-    #[ORM\Column]
+    #[ORM\Column()]
     private ?bool $actif = null;
 
     public function __construct()

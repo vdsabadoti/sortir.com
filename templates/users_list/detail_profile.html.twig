@@ -20,6 +20,7 @@
                         <li class="py-2">Nom : {{ user.nom }}</li>
                         <li class="py-2">Téléphone : {{ user.telephone }}</li>
                         <li class="py-2">Site : {{ user.site.nom }}</li>
+                        <li class="py-2">Picture : <img src="{{ asset("assets/img" ~ '/' ~ user.image) }}" width="300px"></li>
 
                     </ul>
 

@@ -43,11 +43,10 @@ class RegistrationService
             $user->setPrenom($worksheet->getCell([2, $row])->getValue());
             $user->setTelephone($worksheet->getCell([3, $row])->getValue());
             $user->setPassword($this->userPasswordHasher->hashPassword( $user,$worksheet->getCell( [4, $row] )->getValue() )  );
-            $user->setAdministrateur($worksheet->getCell([5, $row])->getValue());
-            $user->setActif($worksheet->getCell([6, $row])->getValue());
-            $user->setEmail($worksheet->getCell([7, $row])->getValue());
+            $user->setActif($worksheet->getCell([5, $row])->getValue());
+            $user->setEmail($worksheet->getCell([6, $row])->getValue());
             $user->setRoles(array());
-            $user->setSite( $this->siteRepository->findOneBy( ['nom' => strtoupper( $worksheet->getCell([9, $row])->getValue() )] ) );
+            $user->setSite( $this->siteRepository->findOneBy( ['nom' => strtoupper( $worksheet->getCell([8, $row])->getValue() )] ) );
 
             $users[] = $user;
 

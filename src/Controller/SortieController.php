@@ -240,7 +240,10 @@ class SortieController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function index(SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
-        $sorties = $sortieRepository->findFilteredByState();
+
+        $isAdmin = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $sorties = $sortieRepository->findFilteredByState($isAdmin, $this->getUser());
+
         $sites = $siteRepository->findAll();
 
         return $this->render('sortie/sortieList.html.twig', [
@@ -282,7 +285,8 @@ class SortieController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function search(Request $request ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
-        $sorties = $sortieRepository->search($request->get('search'));
+        $isAdmin = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $sorties = $sortieRepository->search($request->get('search'), $this->getUser(), $isAdmin);
         $sites = $siteRepository->findAll();
 
         return $this->render('sortie/sortieList.html.twig', [
@@ -295,7 +299,8 @@ class SortieController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function sortiesBySite(?string $site ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
     {
-        $sorties = $sortieRepository->findBy([ 'site' => $siteRepository->findOneBy(['nom' => $site])]);
+        $isAdmin = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $sorties = $sortieRepository->findFilteredBySite($isAdmin, $this->getUser(), $siteRepository->findOneBy(['nom' => $site]));
         $sites = $siteRepository->findAll();
 
         return $this->render('sortie/sortieList.html.twig', [

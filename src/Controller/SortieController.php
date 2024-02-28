@@ -37,7 +37,6 @@ class SortieController extends AbstractController
 
         $form->handleRequest($request);
 
-        //dd($form);
 
         if(isset($request->get('sortie')['AjouterLieu']))
         {
@@ -48,11 +47,17 @@ class SortieController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-
             $em->beginTransaction();
             try {
 
+                //On définit l'état (en création ou ouvert)
                 $sortie->setEtat($e->find(1));
+                if (array_key_exists('publier', $request->get('sortie'))){
+                    if ($request->get('sortie')['publier']){
+                        $sortie->setEtat($e->find(2));
+                    }
+                }
+
                 $sortie->setSite($sortie->getOrganisateur()->getSite());
 
                 // On persiste le lieu
@@ -87,7 +92,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER')]
-    public function update(Sortie $sortie, EntityManagerInterface $em, Request $request, SortiesService $sortiesService, EtatRepository $etatRepository) : Response
+    public function update(Sortie $sortie, EntityManagerInterface $em, Request $request, SortiesService $sortiesService, EtatRepository $e) : Response
     {
 
         if($sortiesService->verifModificationSortie($sortie, $this->getUser()))
@@ -131,8 +136,13 @@ class SortieController extends AbstractController
                 $em->beginTransaction();
                 try {
 
-                    //On met à jour l'état à OUVERTE
-                    $sortie->setEtat($etatRepository->find(2));
+                    //On définit l'état (en création ou ouvert)
+                    $sortie->setEtat($e->find(1));
+                    if (array_key_exists('publier', $request->get('sortie'))){
+                        if ($request->get('sortie')['publier']){
+                            $sortie->setEtat($e->find(2));
+                        }
+                    }
 
                     // On persiste le lieu
                     $sortie->getLieu()->setActif(true);

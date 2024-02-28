@@ -62,7 +62,6 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/registerByExcel', name: 'app_register_by_excel')]
-    #[IsGranted('ROLE_CONTRIB')]
     public function registerByExcel(Request $request, RegistrationService $registrationService,EntityManagerInterface $entityManager) : Response
     {
 

@@ -6,6 +6,7 @@ use App\Entity\Lieu;
 use App\Form\LieuAdminType;
 use App\Repository\LieuRepository;
 use App\Repository\VilleRepository;
+use App\Services\LieuService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,13 +36,15 @@ class LieuController extends AbstractController
     }
 
     #[Route('/new', name: 'app_lieu_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, LieuService $lieuService): Response
     {
         $lieu = new Lieu();
         $form = $this->createForm(LieuAdminType::class, $lieu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $lieuService->definirCoordonnees($lieu);
             $entityManager->persist($lieu);
             $entityManager->flush();
 
@@ -55,12 +58,14 @@ class LieuController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_lieu_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Lieu $lieu, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Lieu $lieu, EntityManagerInterface $entityManager, LieuService $lieuService): Response
     {
         $form = $this->createForm(LieuAdminType::class, $lieu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $lieuService->definirCoordonnees($lieu);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);

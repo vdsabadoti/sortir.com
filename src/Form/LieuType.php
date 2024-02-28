@@ -27,21 +27,11 @@ class LieuType extends AbstractType
 
             ])
             ->add('rue',TextType::class, [
+                'label' => 'Rue et numéro de rue',
                 'row_attr' => ['class' => 'my-1 flex flex-col'],
                 'label_attr' => ['class' => ' text-gray-600'],
-                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
-
-            ])
-            ->add('latitude',NumberType::class, [
-                'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'label_attr' => ['class' => ' text-gray-600'],
-                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
-
-            ])
-            ->add('longitude',NumberType::class, [
-                'row_attr' => ['class' => 'my-1 flex flex-col'],
-                'label_attr' => ['class' => ' text-gray-600'],
-                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer']
+                'attr' => ['class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer',
+                    'placeholder' => '7 rue de la paix']
 
             ])
             ->add('ville', EntityType::class, [

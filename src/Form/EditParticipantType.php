@@ -31,38 +31,48 @@ class EditParticipantType extends AbstractType
             ->add('email', TextareaType::class, [
                 'label' => 'Email',
                 'attr' => [
-                    'class' => 'block py-0.5 px-0 text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-0.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
             ->add('nom', TextareaType::class, [
                 'label' => 'Nom',
                 'attr' => [
-                    'class' => 'block py-1.5 px-0 text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-1.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
             ->add('prenom', TextareaType::class, [
                 'label' => 'Prenom',
                 'attr' => [
-                    'class' => 'block py-2.5 px-0  text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
-
             ->add('telephone', TelType::class, [
                 'label' => 'Telephone',
                 'attr' => [
-                    'class' => 'block py-2.5 px-0  text-sm text-gray-900 bg-white border-0 border-b-2 
+                    'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                 ]
             ])
-
-
+            ->add('site', EntityType::class, [
+                'class' => Site::class,
+                'choice_label' => 'nom',
+                'attr' => [
+                    'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
+                    border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                ]
+            ])
             ->add('image', HiddenType::class)
             ->add('poster_file', FileType::class, [
                 'required' => false,
                 'mapped' => false,
+                'label' => false,
+                'attr' => [
+                    'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 
+                     border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                ],
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -76,7 +86,6 @@ class EditParticipantType extends AbstractType
                     ])
                 ]
             ])
-
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $user = $event->getData();
                 if ($user && $user->getImage()) {
@@ -86,12 +95,7 @@ class EditParticipantType extends AbstractType
                         'mapped' => false,
                     ]);
                 }
-            })
-
-            ->add('site', EntityType::class, [
-                'class' => Site::class,
-                'choice_label' => 'nom'
-            ]);
+            });
 
 
     }

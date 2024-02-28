@@ -6,7 +6,7 @@
 
 
 
-    <section class=" dark:bg-gray-900 p-3 sm:p-5">
+    <section class="dark:bg-gray-900 p-3 sm:p-5">
 
         <div class="mx-auto px-4 lg:px-12">
 
@@ -27,7 +27,7 @@
                         {% endif %}
 
 
-                        <div class="flex">
+                        <div>
 
                             <div class="flex items-start flex-col ml-10">
 
@@ -46,12 +46,15 @@
                                 <input type="hidden" name="_csrf_token"
                                        value="{{ csrf_token('authenticate') }}">
 
-                                <div>
 
-                                    <input type="checkbox" name="_remember_me" class="form-check-input w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
+                                <div class="flex-wrap">
+
+                                    <input type="checkbox" name="_remember_me"
+                                           class="form-check-input w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
                                     <label class="form-check-label bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm   text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                         Se souvenir de moi
                                     </label>
+
 
                                     <button class=" bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                             type="submit">Se connecter
@@ -60,10 +63,8 @@
                                     <a class="bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                        href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a>
 
+
                                 </div>
-
-
-
 
 
                             </div>

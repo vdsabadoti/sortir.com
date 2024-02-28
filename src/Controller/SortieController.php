@@ -183,7 +183,7 @@ class SortieController extends AbstractController
         }
 
         $this->addFlash('error', 'Vous ne pouvez pas modifier une sortie deja publiée');
-        return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
+        return $this->redirectToRoute('app_home');
 
     }
 

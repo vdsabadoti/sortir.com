@@ -8,6 +8,9 @@
         #map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
             height:400px;
         }
+        #map2{
+            height:400px;
+        }
     </style>
 {% endblock %}
 {% block javascripts %}
@@ -16,62 +19,193 @@
 {% endblock %}
 
 {% block body %}
-    <section class=" dark:bg-gray-900">
+    <section class="hidden sm:block dark:bg-gray-900">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 relative shadow-md rounded-lg overflow-hidden">
 
-                <div class="p-5 max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
-                    <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">{{ sortie.nom }}</h2>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Description : </span>{{ sortie.infosSortie }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Début de la sortie : </span>{{ sortie.dateHeureDebut|date('Y-m-d H:i:s') }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Durée : </span>
-                        {% if sortie.duree//60 == 1 %}
-                            {{ sortie.duree//60 }} heure
-                        {% endif %}
-                        {% if sortie.duree//60 > 1 %}
-                            {{ sortie.duree//60 }} heures
-                        {% endif %}
-                        {% if sortie.duree%60 > 1 %}
-                            {{ sortie.duree%60 }} minutes
-                        {% endif %}
-                        {% if sortie.duree%60 == 1 %}
-                            {{ sortie.duree%60 }} minute
-                        {% endif %}
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Date de fin des inscriptions : </span>{{ sortie.dateLimiteInscription|date('Y-m-d H:i:s') }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Nombre de participant / nombres de places : </span>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Ville organisatrice : </span>Ville organisatrice : {{ sortie.organisateur.site.nom }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Lieu : </span>{{ sortie.lieu.nom }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Rue : </span>{{ sortie.lieu.rue }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Ville : </span>{{ sortie.lieu.ville.nom }}</p>
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Code Postal : </span>{{ sortie.lieu.ville.codepostal }}</p>
-                    <div id="map">
-                        <!-- Ici s'affichera la carte -->
+                <div class="grid grid-rows-2id">
+
+                    <div class="row-span-1">
+
+                        <div class="grid grid-cols-2 gap-4">
+
+                            <div class="col-span-1 p-5 border rounded-lg max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
+                                <div>
+
+                                    <div class="w-full inline-flex justify-between">
+                                        <div class="">
+                                            <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">{{ sortie.nom }}</h2>
+                                        </div>
+                                        <div class="">
+                                            <span class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ sortie.etat.libelle }}</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Description : </span>{{ sortie.infosSortie }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Date : </span>{{ sortie.dateHeureDebut|date('d/m/Y') }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Horaire : </span>{{ sortie.dateHeureDebut|date('H:i') }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Durée : </span>
+                                        {% if sortie.duree//60 == 1 %}
+                                            {{ sortie.duree//60 }} heure
+                                        {% endif %}
+                                        {% if sortie.duree//60 > 1 %}
+                                            {{ sortie.duree//60 }} heures
+                                        {% endif %}
+                                        {% if sortie.duree%60 > 1 %}
+                                            {{ sortie.duree%60 }} minutes
+                                        {% endif %}
+                                        {% if sortie.duree%60 == 1 %}
+                                            {{ sortie.duree%60 }} minute
+                                        {% endif %}
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Fin des inscriptions : </span>{{ sortie.dateLimiteInscription|date('d/m/Y H:i') }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Inscrits : </span>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Site organisateur : </span>{{ sortie.organisateur.site.nom }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Lieu : </span>{{ sortie.lieu.nom }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Rue : </span>{{ sortie.lieu.rue }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Ville : </span>{{ sortie.lieu.ville.nom }}</p>
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Code Postal : </span>{{ sortie.lieu.ville.codepostal }}</p>
+                                </div>
+
+                                <div class="w-full inline-flex justify-between px-8">
+                                    <div>
+                                    {% if sortie.etat.id <6 %}
+                                        {% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
+                                            <a href="{{ path("app_sorties_annuler",{'id' : sortie.id}) }}">
+                                                <button class="w-56 p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Annuler
+                                                </button>
+                                            </a>
+                                        {% endif %}
+                                    {% endif%}
+                                    </div>
+                                    <div>
+                                    {% if sortie.etat.id == 1 %}
+                                        {% if app.user == sortie.organisateur %}
+                                            <a href="{{ path("app_sortie_update",{'id' : sortie.id}) }}">
+                                                <button class="w-56 p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Editer
+                                                </button>
+                                            </a>
+                                        {% endif %}
+                                    {% endif%}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-span-1 p-5 border rounded-lg max-w-screen-lg text-gray-500 sm:text-lg dark:text-gray-400">
+                                <div>
+                                    <div class="inline-flex space-x-8">
+                                        <div class="justify-start">
+                                            <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">Participants</h2>
+                                        </div>
+                                    </div>
+
+                                    {% for participant in sortie.participants %}
+                                        <a href="{{ path("app_profile_detail_id",{'id' : participant.id}) }}"><p class="mb-4 font-medium">{{ participant.prenom }} {{ participant.nom }} ({{ participant.email }})</p></a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {#                <a href="#" class="inline-flex items-center font-medium text-primary-600 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-700">#}
+                        {#                    Learn more#}
+                        {#                    <svg class="ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>#}
+                        {#                </a>#}
                     </div>
 
 
-                    <p class="mb-4 font-medium"><span class="font-extrabold">Particpants :<br> </span></p>
+                    <div class="row-span-1 border rounded-lg ">
+                        <div id="map">
+                            <!-- Ici s'affichera la carte -->
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sm:hidden dark:bg-gray-900">
+        <div class="mx-auto max-w-screen-xl">
+            <div class="relative shadow-md rounded-lg overflow-hidden">
+                <div class="bg-white relative shadow-md rounded-lg overflow-hidden text-gray-500 p-5">
+                    <div>
+                        <div class="w-full justify-between inline-flex">
+                            <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">{{ sortie.nom }}</h2>
+                            <div class="mt-2">
+                                <span class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ sortie.etat.libelle }}</span>
+                            </div>
+                        </div>
+
+
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Description : </span>{{ sortie.infosSortie }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Début de la sortie : </span>{{ sortie.dateHeureDebut|date('d/m/Y H:i:s') }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Durée : </span>
+                            {% if sortie.duree//60 == 1 %}
+                                {{ sortie.duree//60 }} heure
+                            {% endif %}
+                            {% if sortie.duree//60 > 1 %}
+                                {{ sortie.duree//60 }} heures
+                            {% endif %}
+                            {% if sortie.duree%60 > 1 %}
+                                {{ sortie.duree%60 }} minutes
+                            {% endif %}
+                            {% if sortie.duree%60 == 1 %}
+                                {{ sortie.duree%60 }} minute
+                            {% endif %}
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Fin des inscriptions : </span>{{ sortie.dateLimiteInscription|date('d/m/Y H:i:s') }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Inscrits : </span>{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Site organisateur : </span>{{ sortie.organisateur.site.nom }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Lieu : </span>{{ sortie.lieu.nom }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Rue : </span>{{ sortie.lieu.rue }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Ville : </span>{{ sortie.lieu.ville.nom }}</p>
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Code Postal : </span>{{ sortie.lieu.ville.codepostal }}</p>
+                    </div>
+
+                    <div id="map2">
+                        <!-- Ici s'affichera la carte -->
+                    </div>
+
+                    <div class="w-full justify-between inline-flex px-2 mt-4 mb-4">
+                        <div>
+                            {% if sortie.etat.id <6 %}
+                                {% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
+                                    <a href="{{ path("app_sorties_annuler",{'id' : sortie.id}) }}">
+                                        <button class="p-2.5 ms-2 w-44 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Annuler
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            {% endif%}
+                        </div>
+                        <div>
+                            {% if sortie.etat.id == 1 %}
+                                {% if app.user == sortie.organisateur %}
+                                    <a href="{{ path("app_sortie_update",{'id' : sortie.id}) }}">
+                                        <button class="p-2.5 ms-2 w-44 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Editer
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            {% endif%}
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <div class="inline-flex space-x-8">
+                            <div class="justify-start">
+                                <h2 class="mb-4 text-2xl text-center tracking-tight font-bold text-gray-900 dark:text-white">Participants</h2>
+                            </div>
+                        </div>
+
                         {% for participant in sortie.participants %}
-                            <a href="{{ path("app_profile_detail_id",{'id' : participant.id}) }}"><p class="mb-4 font-medium">{{ participant.prenom }} {{ participant.nom }}</p></a>
+                            <a href="{{ path("app_profile_detail_id",{'id' : participant.id}) }}">
+                                <p class="mb-4 font-medium">{{ participant.prenom }} {{ participant.nom }} ({{ participant.email }}) </p></a>
                         {% endfor %}
 
+                    </div>
 
-
-                    {% if sortie.etat.id <6 %}
-                        {% if is_granted('ROLE_ADMIN') or app.user == sortie.organisateur %}
-                            <td class="px-4 py-3"><a href="{{ path("app_sorties_annuler",{'id' : sortie.id}) }}">annuler</a></td>
-                        {% endif %}
-                    {% endif%}
-
-                    {% if sortie.etat.id == 1 %}
-                        {% if app.user == sortie.organisateur %}
-                            <td class="px-4 py-3"><a href="{{ path("app_sortie_update",{'id' : sortie.id}) }}">editer</a></td>
-                        {% endif %}
-                    {% endif%}
-
-                    {#                <a href="#" class="inline-flex items-center font-medium text-primary-600 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-700">#}
-                    {#                    Learn more#}
-                    {#                    <svg class="ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>#}
-                    {#                </a>#}
                 </div>
             </div>
         </div>
@@ -96,9 +230,24 @@
             }).addTo(macarte);
             let marker = L.marker([lat, lon]).addTo(macarte);
         }
+
+
+        function initMap2() {
+            // Créer l'objet "macarte" et l'insèrer dans l'élément HTML qui a l'ID "map2"
+            macarte = L.map('map2').setView([lat, lon], zoom);
+            // Leaflet ne récupère pas les cartes (tiles) sur un serveur par défaut. Nous devons lui préciser où nous souhaitons les récupérer. Ici, openstreetmap.fr
+            L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                // Il est toujours bien de laisser le lien vers la source des données
+                attribution: 'données © <a href="//osm.org/copyright">OpenStreetMap</a>/ODbL - rendu <a href="//openstreetmap.fr">OSM France</a>',
+                minZoom: 1,
+                maxZoom: 20
+            }).addTo(macarte);
+            let marker = L.marker([lat, lon]).addTo(macarte);
+        }
         window.onload = function(){
             // Fonction d'initialisation qui s'exécute lorsque le DOM est chargé
             initMap();
+            initMap2();
         };
     </script>
 

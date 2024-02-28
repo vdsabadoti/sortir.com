@@ -23,23 +23,52 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findFilteredByState(): array
+    public function findFilteredByState(bool $isAdmin, $organisateur): array
     {
-        return $this->createQueryBuilder('s')
-            ->where('s.etat = 1 OR s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6')
-            ->getQuery()
-            ->getResult()
-            ;
+        $q = $this->createQueryBuilder('s')
+            ->where('s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6');
+
+        if($isAdmin) {
+                $q->orWhere('s.etat = 1');
+            } else {
+            $q->orWhere('s.etat = 1 AND s.organisateur = :organisateur')
+                ->setParameter('organisateur', $organisateur);
+        }
+            return $q->getQuery()->getResult();
     }
 
-    public function search(string $search): array
+    public function findFilteredBySite(bool $isAdmin, Participant $organisateur, Site $site): array
     {
-        return $this->createQueryBuilder('s')
+        $q = $this->createQueryBuilder('s')
+            ->where('s.site = :site')
+            ->setParameter('site', $site)
+            ->andWhere('s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6');
+
+        if($isAdmin) {
+            $q->orWhere('s.etat = 1');
+        } else {
+            $q->orWhere('s.etat = 1 AND s.organisateur = :organisateur')
+                ->setParameter('organisateur', $organisateur);
+        }
+
+        return $q->getQuery()->getResult();
+    }
+
+    public function search(string $search, $organisateur, bool $isAdmin): array
+    {
+        $q = $this->createQueryBuilder('s')
             ->where('s.nom LIKE :search')
             ->setParameter('search',"%".$search."%")
-            ->andWhere('s.etat = 1 OR s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6')
-            ->getQuery()
-            ->getResult()
+            ->andWhere('s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6');
+
+        if ($isAdmin) {
+            $q->orWhere('s.etat = 1');
+        } else {
+            $q->orWhere('s.etat = 1 AND s.organisateur = :organisateur')
+                ->setParameter('organisateur', $organisateur);
+        }
+            return $q->getQuery()
+                ->getResult();
         ;
     }
     public function findParticipe(Participant $participant):array

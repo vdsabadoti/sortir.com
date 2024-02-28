@@ -48,9 +48,10 @@
                 {% endif %}
 
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_users_list') }}">Liste utilisateurs</a></li>
-                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_lieu_index') }}">Lieu</a></li>
-                    <li><a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="{{ path ('app_site_index') }}">Site</a></li>
+                    <li><a href="{{ path ('app_register_by_excel') }}">Ajout Utilisateurs</a></li>
+                    <li><a href="{{ path ('app_users_list') }}">Liste utilisateurs</a></li>
+                    <li><a href="{{ path ('app_lieu_index') }}">Lieu</a></li>
+                    <li><a href="{{ path ('app_site_index') }}">Site</a></li>
                 {% endif %}
 
                 {% if is_granted('ROLE_USER') %}

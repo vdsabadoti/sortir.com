@@ -24,10 +24,10 @@ class LieuController extends AbstractController
         $villes = $villeRepository->findAll();
 
         $text = $request->request->get('lieu');
-        $desactif = $request->request->get('desactif');
+        $actif = $request->request->get('actif');
         $ville = $request->request->get('ville');
 
-        $lieux = $lieuRepository->findByTextAndStateAndVille($text, $desactif, $ville);
+        $lieux = $lieuRepository->findByTextAndStateAndVille($text, $actif, $ville);
         return $this->render('lieu/index.html.twig', [
             'lieux' => $lieux,
             'villes' => $villes

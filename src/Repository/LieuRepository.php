@@ -30,7 +30,7 @@ class LieuRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByTextAndStateAndVille($text, $desactif, $ville) : array
+    public function findByTextAndStateAndVille($text, $actif, $ville) : array
     {
 
         $query = $this->createQueryBuilder('l')
@@ -42,9 +42,9 @@ class LieuRepository extends ServiceEntityRepository
                 ->setParameter('id', $ville);
         }
 
-        if ($desactif) {
+        if ($actif) {
             $query->andWhere('l.actif = :value')
-                ->setParameter('value', 0);
+                ->setParameter('value', 1);
         }
 
         return $query->getQuery()->getResult();

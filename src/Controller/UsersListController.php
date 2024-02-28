@@ -23,27 +23,6 @@ class UsersListController extends AbstractController
         ]);
     }
 
-//    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-//    public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
-//    {
-//        $form = $this->createForm(RegistrationFormType::class, $participant);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->persist($participant);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->render('users_list/edit.html.twig', [
-//            'user' => $participant,
-//            'form' => $form,
-//        ]);
-
-//    }
-
-
     #[Route('/delete/{id}', name: 'app_user_delete')]
     public function delete(Participant $participant, EntityManagerInterface $entityManager): Response
     {

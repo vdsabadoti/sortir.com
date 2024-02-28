@@ -22,7 +22,7 @@ class EditParticipantByAdminController extends AbstractController
             $entityManager->persist($participant);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index',[],Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_users_list',[],Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('edit_participant_by_admin/index.html.twig', [

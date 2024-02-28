@@ -24,7 +24,8 @@ class LieuService
 
     public function definirCoordonnees( Lieu $lieu) : Lieu
     {
-        $query = str_replace(' ', '+', $lieu->getRue());
+        $query = str_replace(' ', '+', $lieu->getRue())
+            .$lieu->getVille()->getCodePostal() .$lieu->getVille()->getNom();
 
         $result = $this->httpClient->request('GET', 'https://api-adresse.data.gouv.fr/search/?q='.$query.'&limit=1'/*, [
             'query' => [

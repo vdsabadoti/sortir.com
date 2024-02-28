@@ -4,44 +4,50 @@
 
 {% block body %}
 <div class="flex flex-col">
-
-    <a href="{{ path('app_mes_sorties') }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">sorties que j'organise</button></a>
-    <a href="{{ path('app_mes_participation') }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">sorties auxquelles je participe</button></a>
-
-    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Choix du site<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-        </svg>
-    </button>
-
-    <!-- Dropdown sites -->
-    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-            <li>
-                <a href="/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tout les sites</a>
-            </li>
-            {% for site in sites %}
-            <li>
-                <a href="{{ path('app_sorties_par_sites', {'site': site.nom}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ site.nom }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-
-
-
-    <form class="flex items-center max-w-sm mx-auto" action="{{ path('app_search') }}" method="post">
-        <label for="simple-search" class="sr-only">Search</label>
-        <div class="relative w-full">
-            <input type="text" name="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher dans le nom" required />
+    {#    head de recherche#}
+    <div class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+        <div class="flex items-center flex-1 space-x-4">
+            <h5>
+                <form class="flex items-center max-w-sm mx-auto" action="{{ path('app_search') }}" method="post">
+                    <label for="simple-search" class="sr-only">Search</label>
+                    <div class="relative w-full">
+                        <input type="text" name="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher dans le nom" required />
+                    </div>
+                    <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <span class="sr-only">Search</span>
+                    </button>
+                </form>
+            </h5>
+            <h5>
+                <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Choix du site<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <!-- Dropdown sites -->
+                <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                        <li>
+                            <a href="/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tout les sites</a>
+                        </li>
+                        {% for site in sites %}
+                            <li>
+                                <a href="{{ path('app_sorties_par_sites', {'site': site.nom}) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ site.nom }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </h5>
         </div>
-        <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-            <span class="sr-only">Search</span>
-        </button>
-    </form>
+        <div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+                <a href="{{ path('app_mes_sorties') }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-56 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">sorties que j'organise</button></a>
+                <a href="{{ path('app_mes_participation') }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-56 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">sorties auxquelles je participe</button></a>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -63,7 +69,10 @@
                             <th scope="col" class="px-4 py-3">Etat</th>
                             <th scope="col" class="px-4 py-3">inscrit</th>
                             <th scope="col" class="px-4 py-3">organisateur</th>
-                            <th scope="col" class="px-4 py-3">actions  </th>
+                            <th scope="col" class="px-4 py-3">actions</th>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <th scope="col" class="px-4 py-3">annuler sortie</th>
+                            {% endif %}
                         </tr>
                         </thead>
                         <tbody>
@@ -75,25 +84,28 @@
                                 <td class="px-4 py-3">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
                                 <td class="px-4 py-3">{{ sortie.etat.libelle }}</td>
                                 <td class="px-4 py-3">{% if app.user in sortie.participants %}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.856 10.303c.086.554.144 1.118.144 1.697 0 6.075-4.925 11-11 11s-11-4.925-11-11 4.925-11 11-11c2.347 0 4.518.741 6.304 1.993l-1.422 1.457c-1.408-.913-3.082-1.45-4.882-1.45-4.962 0-9 4.038-9 9s4.038 9 9 9c4.894 0 8.879-3.928 8.99-8.795l1.866-1.902zm-.952-8.136l-9.404 9.639-3.843-3.614-3.095 3.098 6.938 6.71 12.5-12.737-3.096-3.096z"/></svg>{% else %}<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12.002 2.005c5.518 0 9.998 4.48 9.998 9.997 0 5.518-4.48 9.998-9.998 9.998-5.517 0-9.997-4.48-9.997-9.998 0-5.517 4.48-9.997 9.997-9.997zm0 1.5c-4.69 0-8.497 3.807-8.497 8.497s3.807 8.498 8.497 8.498 8.498-3.808 8.498-8.498-3.808-8.497-8.498-8.497zm0 7.425 2.717-2.718c.146-.146.339-.219.531-.219.404 0 .75.325.75.75 0 .193-.073.384-.219.531l-2.717 2.717 2.727 2.728c.147.147.22.339.22.531 0 .427-.349.75-.75.75-.192 0-.384-.073-.53-.219l-2.729-2.728-2.728 2.728c-.146.146-.338.219-.53.219-.401 0-.751-.323-.751-.75 0-.192.073-.384.22-.531l2.728-2.728-2.722-2.722c-.146-.147-.219-.338-.219-.531 0-.425.346-.749.75-.749.192 0 .385.073.531.219z" fill-rule="nonzero"/></svg>{%endif%}</td>
-                                <td class="px-4 py-3">{{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}</td>
-
+                                {% if app.user == sortie.organisateur %}
+                                    <td class="px-4 py-3 text-red-600">{{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}</td>
+                                {% else %}
+                                    <td class="px-4 py-3">{{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}</td>
+                                {% endif %}
+                                <td class="px-4 py-3">
                                     {%  if app.user != sortie.organisateur %}
 
                                         {% if sortie.etat.id == 2 and app.user not in sortie.participants %}
-                                            <td class="px-4 py-3">  <a href="{{ path("app_inscribe",{'id' : sortie.id}) }}">S'inscrire</a>
+                                            <a href="{{ path("app_inscribe",{'id' : sortie.id}) }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-24 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">S'inscrire</button></a>
                                         {% else %}
                                         {% endif %}
 
                                         {% if sortie.etat.id == 2 or sortie.etat.id == 3 and app.user in sortie.participants %}
-                                            <td><a href="{{ path("app_desisted",{'id' : sortie.id}) }}">Se désinscrire</a> </td>
+                                            <a href="{{ path("app_desisted",{'id' : sortie.id}) }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-24 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Se désinscrire</button></a>
                                         {% else %}
                                         {% endif %}
+                                    {% endif %}
 
-                                    {% else %}
-                                        <td class="px-4 py-3">C'est mon activitée</td>
-                                    {%  endif %}
+                                    <a href="{{ path("app_sorties_detail",{'id' : sortie.id}) }}"><button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-24 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">details</button></a>
+                                </td>
 
-                                <td class="px-4 py-3"><a href="{{ path("app_sorties_detail",{'id' : sortie.id}) }}">Details</a></td>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     {% if sortie.etat.id <6 %}
                                     <td class="px-4 py-3"><a href="{{ path("app_sorties_annuler",{'id' : sortie.id}) }}">Annuler</a></td>

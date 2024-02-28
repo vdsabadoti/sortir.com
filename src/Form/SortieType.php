@@ -72,7 +72,7 @@ class SortieType extends AbstractType
                 'label' => 'Ajouter un lieu manuelement',
                 'row_attr' => ['class' => 'w-fit mx-auto  flex flex-col'
                 ],
-                'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg',
+                'attr' => ['class' => 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 mt-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
                     'formnovalidate' => 'formnovalidate']
 
             ]);
@@ -82,7 +82,7 @@ class SortieType extends AbstractType
                     'label' => 'Sélectionner parmis les lieux disponibles',
                     'row_attr' => [
                         'class' => 'w-fit mx-auto  flex flex-col'],
-                    'attr' => ['class' => 'border-2 border-slate-400 mt-6 rounded-lg',
+                    'attr' => ['class' => 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 mt-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
                         'formnovalidate' => 'formnovalidate']
                 ]);
 
@@ -138,8 +138,10 @@ class SortieType extends AbstractType
             {
                 $builder->add('publier', CheckboxType::class, [
                     'label' => 'Publier sortie',
+                    'label_attr' => ['class' => 'ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'],
                     'required' => false,
-                    'mapped' => false
+                    'mapped' => false,
+                    'attr' => ['class' => 'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600']
                 ]);
                 $builder->add('submit', SubmitType::class, [
                     'label' => 'Envoyer',

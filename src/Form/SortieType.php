@@ -105,7 +105,9 @@ class SortieType extends AbstractType
                     'class' => Lieu::class,
                     'choice_label' => 'nom',
                     'query_builder' => function(LieuRepository $lieuRepository) {
-                        return $lieuRepository->createQueryBuilder('l');
+                        return $lieuRepository->createQueryBuilder('l')
+                            ->andWhere('l.actif = :value')
+                            ->setParameter('value', 1);
                     },
                     'row_attr' => ['class' => 'my-1 flex flex-col'],
                     'label_attr' => ['class' => ' text-gray-600'],

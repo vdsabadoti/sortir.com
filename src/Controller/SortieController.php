@@ -38,7 +38,6 @@ class SortieController extends AbstractController
 
         $form->handleRequest($request);
 
-        //dd($form);
 
         if(isset($request->get('sortie')['AjouterLieu']) || isset($request->get('sortie')['SelectionnerLieuxDisponibles']) )
         {
@@ -52,11 +51,17 @@ class SortieController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-
             $em->beginTransaction();
             try {
 
+                //On définit l'état (en création ou ouvert)
                 $sortie->setEtat($e->find(1));
+                if (array_key_exists('publier', $request->get('sortie'))){
+                    if ($request->get('sortie')['publier']){
+                        $sortie->setEtat($e->find(2));
+                    }
+                }
+
                 $sortie->setSite($sortie->getOrganisateur()->getSite());
 
                 // On persiste le lieu
@@ -92,7 +97,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/update/{id}', name:'app_sortie_update', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER')]
-    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService, LieuService $lieuService) : Response
+    public function update(EntityManagerInterface $em, Request $request, Sortie $sortie, SortiesService $sortiesService, LieuService $lieuService, EtatRepository $e) : Response
     {
 
         if($sortiesService->verifModificationSortie($sortie, $this->getUser()) )
@@ -138,6 +143,14 @@ class SortieController extends AbstractController
                 $em->beginTransaction();
                 try {
 
+                    //On définit l'état (en création ou ouvert)
+                    $sortie->setEtat($e->find(1));
+                    if (array_key_exists('publier', $request->get('sortie'))){
+                        if ($request->get('sortie')['publier']){
+                            $sortie->setEtat($e->find(2));
+                        }
+                    }
+
                     // On persiste le lieu
                     $sortie->getLieu()->setActif(true); // On dit que le lieu est actif
                     $lieuService->definirCoordonnees($sortie->getLieu());
@@ -147,6 +160,8 @@ class SortieController extends AbstractController
                     // On persiste la sortie
                     $em->persist($sortie);
                     $em->flush();
+
+
 
                     $em->commit();
                 } catch (\Exception $e) {

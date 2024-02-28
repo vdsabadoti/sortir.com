@@ -12,6 +12,7 @@ use App\Repository\LieuRepository;
 use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -117,6 +118,11 @@ class SortieType extends AbstractType
             // Si l'utilisateur veut ajouter un lieu on mets un bouton différent qui permettra au controller de faire l'insertion au lieu de la mise a jour
             if($options['addLieu'])
             {
+                $builder->add('publier', CheckboxType::class, [
+                    'label' => 'Publier sortie',
+                    'required' => false,
+                    'mapped' => false
+                ]);
                 $builder->add('InsererLieu', SubmitType::class, [
                     'label' => 'Envoyer',
                     'row_attr' => [
@@ -128,6 +134,11 @@ class SortieType extends AbstractType
             }
             else
             {
+                $builder->add('publier', CheckboxType::class, [
+                    'label' => 'Publier sortie',
+                    'required' => false,
+                    'mapped' => false
+                ]);
                 $builder->add('submit', SubmitType::class, [
                     'label' => 'Envoyer',
                     'row_attr' => [
@@ -136,7 +147,9 @@ class SortieType extends AbstractType
                     'attr' => ['class' => 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 mt-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800']
                 ])
                 ;
+
             }
+
 
 
 

@@ -39,6 +39,7 @@ class EditParticipantController extends AbstractController
             if (!empty($form->get('deleteImage')) && $form->get('deleteImage')->getData() && \file_exists($dir . '/' . $participant->getImage())) {
 //                dd('ok');
                 unlink($dir . '/' . $participant->getImage());
+                $participant->setImage(null);
             }
 
             $entityManager->persist($participant);

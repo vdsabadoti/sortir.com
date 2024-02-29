@@ -37,7 +37,24 @@
                                             <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">{{ sortie.nom }}</h2>
                                         </div>
                                         <div class="">
-                                            <span class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ sortie.etat.libelle }}</span>
+                                            <span class="
+                                            {% if sortie.etat.id == 1 %}
+                                    bg-gray-100
+                                    text-gray-800
+                                    {% endif %}
+                                    {% if sortie.etat.id == 2 %}
+                                    bg-green-100
+                                    text-green-800
+                                    {% endif %}
+                                    {% if sortie.etat.id == 3 %}
+                                    bg-yellow-100
+                                    text-yellow-800
+                                    {% endif %}
+                                    {% if sortie.etat.id > 3 %}
+                                    bg-red-100
+                                    text-red-800
+                                    {% endif %}
+                                            text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ sortie.etat.libelle }}</span>
                                         </div>
                                     </div>
 
@@ -136,7 +153,24 @@
                         <div class="w-full justify-between inline-flex">
                             <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">{{ sortie.nom }}</h2>
                             <div class="mt-2">
-                                <span class="bg-yellow-100 text-yellow-800 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ sortie.etat.libelle }}</span>
+                                <span class="
+                                 {% if sortie.etat.id == 1 %}
+                                    bg-gray-100
+                                    text-gray-800
+                                    {% endif %}
+                                    {% if sortie.etat.id == 2 %}
+                                    bg-green-100
+                                    text-green-800
+                                    {% endif %}
+                                    {% if sortie.etat.id == 3 %}
+                                    bg-yellow-100
+                                    text-yellow-800
+                                    {% endif %}
+                                    {% if sortie.etat.id > 3 %}
+                                    bg-red-100
+                                    text-red-800
+                                    {% endif %}
+                                 text-md font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ sortie.etat.libelle }}</span>
                             </div>
                         </div>
 

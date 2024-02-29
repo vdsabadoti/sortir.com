@@ -9,19 +9,17 @@
 
         <div class="px-4">
 
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden p-6 border border-gray-300 sm:rounded-md">
 
                 <div class="p-4">
 
                     {{ form_errors(registrationForm) }}
 
-                    {{ form_start(registrationForm) }}
+                    {{ form_start(registrationForm, {'attr' : {'class' : ' w-5/6 sm:w-5/6 md:w-2/3 lg:w-2/5 xl:w-2/5 2xl:w-1/3 mt-10  mx-auto p-8 border-y-4 border-blue-600 rounded-lg shadow-md'}}) }}
 
                     {{ form_end(registrationForm) }}
 
                 </div>
 
-            </div>
 
         </div>
 

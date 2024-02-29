@@ -41,6 +41,9 @@
                                         </div>
                                     </div>
 
+                                    <p class="mb-4 font-medium"><span class="font-extrabold">Organisateur :</span><a href="{{ path("app_profile_detail_id",{'id' : sortie.organisateur.id}) }}">
+                                            {{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}
+                                        </a></p>
                                     <p class="mb-4 font-medium"><span class="font-extrabold">Description : </span>{{ sortie.infosSortie }}</p>
                                     <p class="mb-4 font-medium"><span class="font-extrabold">Date : </span>{{ sortie.dateHeureDebut|date('d/m/Y') }}</p>
                                     <p class="mb-4 font-medium"><span class="font-extrabold">Horaire : </span>{{ sortie.dateHeureDebut|date('H:i') }}</p>
@@ -138,6 +141,10 @@
                         </div>
 
 
+                        <p class="mb-4 font-medium"><span class="font-extrabold">Organisateur :
+                            </span><a href="{{ path("app_profile_detail_id",{'id' : sortie.organisateur.id}) }}">
+                                {{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1)|upper }}
+                            </a></p>
                         <p class="mb-4 font-medium"><span class="font-extrabold">Description : </span>{{ sortie.infosSortie }}</p>
                         <p class="mb-4 font-medium"><span class="font-extrabold">Début de la sortie : </span>{{ sortie.dateHeureDebut|date('d/m/Y H:i:s') }}</p>
                         <p class="mb-4 font-medium"><span class="font-extrabold">Durée : </span>

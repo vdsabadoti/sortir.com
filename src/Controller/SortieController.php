@@ -8,6 +8,7 @@ use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
 use App\Repository\SortieRepository;
+use App\Services\Censurator;
 use App\Services\LieuService;
 use App\Services\SortiesService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +24,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/create', name:'app_sortie_create')]
     #[IsGranted('ROLE_USER')]
-    public function create(EntityManagerInterface $em, Request $request, EtatRepository $e, LieuService $lieuService) : Response
+    public function create(EntityManagerInterface $em, Request $request, EtatRepository $e, LieuService $lieuService, Censurator $censurator) : Response
     {
 
         $sortie = new Sortie();
@@ -42,6 +43,7 @@ class SortieController extends AbstractController
         if(isset($request->get('sortie')['AjouterLieu']) || isset($request->get('sortie')['SelectionnerLieuxDisponibles']) )
         {
 
+
             $form->clearErrors();
 
             return $this->render('sortie/creer.html.twig', [
@@ -50,7 +52,12 @@ class SortieController extends AbstractController
         }
 
         if($form->isSubmitted() && $form->isValid())
+
+
         {
+
+            $sortie->setInfosSortie($censurator->purify($sortie->getInfosSortie()));
+
             $em->beginTransaction();
             try {
 

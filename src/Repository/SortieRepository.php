@@ -7,6 +7,7 @@ use App\Entity\Site;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\DateTime;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -71,6 +72,34 @@ class SortieRepository extends ServiceEntityRepository
                 ->getResult();
         ;
     }
+
+    public function searchdate(string $start,string $end, $organisateur, bool $isAdmin): array
+    {
+        $end = \DateTime::createFromFormat("m/d/Y", $end);
+        $start = \DateTime::createFromFormat("m/d/Y", $start);
+
+        $q = $this->createQueryBuilder('s')
+            ->andWhere('s.dateHeureDebut <= :end')
+            ->andWhere('s.dateHeureDebut >= :start')
+            ->setParameter('end',$end)
+            ->setParameter('start',$start)
+            ->andWhere('s.etat = 2 OR s.etat = 3 OR s.etat = 4 OR s.etat = 5 OR s.etat = 6');
+
+        if ($isAdmin) {
+            $q->orWhere('s.etat = 1');
+        } else {
+            $q->orWhere('s.etat = 1 AND s.organisateur = :organisateur')
+                ->setParameter('organisateur', $organisateur);
+        }
+        return $q->getQuery()
+            ->getResult();
+
+    }
+
+
+
+
+
     public function findParticipe(Participant $participant):array
     {
         return $this->createQueryBuilder('s')

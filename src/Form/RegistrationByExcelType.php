@@ -14,11 +14,8 @@ class RegistrationByExcelType extends AbstractType
     {
         $builder->add('fichierExcel', FileType::class, [
             'label' => 'Fichier Excel',
-            'required' => 'false'
-
-        ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Envoyer le fichier'
+            'required' => 'false',
+            'attr' => ['class' => 'hidden']
             ])
         ;
 

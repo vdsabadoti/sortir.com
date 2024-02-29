@@ -41,11 +41,8 @@ class SortieController extends AbstractController
 
         if(isset($request->get('sortie')['AjouterLieu']) || isset($request->get('sortie')['SelectionnerLieuxDisponibles']) )
         {
-
-            $form->clearErrors();
-
             return $this->render('sortie/creer.html.twig', [
-                'form' => $form
+                'form' => $form->clearErrors(true)
             ]);
         }
 
@@ -117,10 +114,8 @@ class SortieController extends AbstractController
 
                 $form->handleRequest($request);
 
-                $form->clearErrors();
-
                 return $this->render('sortie/creer.html.twig', [
-                    'form' => $form
+                    'form' => $form->clearErrors(true)
                 ]);
             }
 

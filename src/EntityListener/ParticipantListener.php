@@ -9,17 +9,15 @@ use PhpOffice\PhpSpreadsheet\Shared\File;
 class ParticipantListener
 {
 
-    public function __construct()
+    public function __construct(private string $avatar)
     {
     }
 
     public function postLoad(Participant $participant): void
     {
 
-        $defaultAvatar = "defaultAvatar.svg";
-
         if (!$participant->getImage()) {
-            $participant->setImage($defaultAvatar);
+            $participant->setImage($this->avatar);
         }
 
 

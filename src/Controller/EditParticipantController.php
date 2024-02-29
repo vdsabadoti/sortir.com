@@ -18,7 +18,7 @@ class EditParticipantController extends AbstractController
     public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
 
-        $form = $this->createForm( EditParticipantType::class, $participant);
+        $form = $this->createForm( EditParticipantType::class, $participant, ['avatar' => $this->getParameter('avatar')]);
         $form->handleRequest($request);
         $dir = $this->getParameter('poster_dir');
 
@@ -29,15 +29,15 @@ class EditParticipantController extends AbstractController
                 $fileName = $slugger->slug($participant->getNom()). '-' . uniqid() . '.' . $pictureFile->guessExtension();
                 $pictureFile->move($dir, $fileName);
 
-                if ($participant->getImage() && \file_exists($dir . '/' . $participant->getImage())) {
+                if ($participant->getImage() && $participant->getImage() != $this->getParameter('avatar') && \file_exists($dir . '/' . $participant->getImage())) {
                     unlink($dir . '/' . $participant->getImage());
                 }
 
                 $participant->setImage($fileName);
             }
 
-            if (!empty($form->get('deleteImage')) && $form->get('deleteImage')->getData() && \file_exists($dir . '/' . $participant->getImage())) {
-//                dd('ok');
+            if ($form->has('deleteImage') && $form->get('deleteImage')->getData() && \file_exists($dir . '/' . $participant->getImage())) {
+
                 unlink($dir . '/' . $participant->getImage());
                 $participant->setImage(null);
             }

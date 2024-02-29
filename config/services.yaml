@@ -7,7 +7,7 @@
 parameters:
     timezone: '%env(APP_TIMEZONE)%'
     poster_dir: 'assets/img/'
-
+    avatar: 'defaultAvatar.svg'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -26,6 +26,12 @@ services:
         arguments:
             $etatRepository: '@App\Repository\EtatRepository'
             $em: '@doctrine.orm.default_entity_manager'
+        tags:
+            - {name: 'doctrine.orm.entity_listener', event: 'postLoad'}
+
+    App\EntityListener\ParticipantListener:
+        arguments:
+            $avatar: '@=parameter("avatar")'
         tags:
             - {name: 'doctrine.orm.entity_listener', event: 'postLoad'}
 

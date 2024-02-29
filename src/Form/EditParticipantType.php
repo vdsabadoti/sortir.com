@@ -86,9 +86,9 @@ class EditParticipantType extends AbstractType
                     ])
                 ]
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 $user = $event->getData();
-                if ($user && $user->getImage()) {
+                if ($user && $user->getImage() && $user->getImage() != $options['avatar']) {
                     $form = $event->getForm();
                     $form->add('deleteImage', CheckboxType::class, [
                         'required' => false,
@@ -104,6 +104,7 @@ class EditParticipantType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
+            'avatar' => null,
         ]);
     }
 }

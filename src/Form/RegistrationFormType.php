@@ -103,10 +103,10 @@ class RegistrationFormType extends AbstractType
                     ]
 
                     ,
-                    'label' => 'New password',
+                    'label' => 'Mot de passe',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => 'Repetez votre mot de passe',
                 ],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 // Instead of being set onto the object directly,

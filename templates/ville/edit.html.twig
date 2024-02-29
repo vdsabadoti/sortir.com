@@ -3,20 +3,21 @@
 {% block title %}Editer une Ville{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto grid grid-rows-4 gap-4 flex">
+    <div class="container mx-auto grid grid-rows-4 gap-4 flex mt-4 bg-white border border-gray-200 rounded-lg shadow">
 
-        <div class="mx-auto row-span-1">
-            <h1 class="max-w-sm mb-2 text-4xl text-center font-bold tracking-tight text-gray-900">Editer une ville</h1>
+        <div class="mx-auto row-span-1 self-center">
+            <h1 class="max-w-sm text-4xl text-center font-bold tracking-tight text-gray-900">Editer une ville</h1>
         </div>
 
-        <div class="mx-auto row-span-3 w-full sm:w-1/2 p-6 bg-white border border-gray-200 rounded-lg shadow">
+        <div class="mx-auto row-span-3 w-full sm:w-1/2 p-6">
+
             <div class="mx-auto justify-center">
                 {{ include('ville/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
             </div>
 
-            <div class="mx-auto p-5 justify-center">
+            <div class="mx-auto p-5 flex justify-center">
                 <a href="{{ path('app_ville_index') }}" >
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button class="w-56 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Retour
                     </button>
                 </a>

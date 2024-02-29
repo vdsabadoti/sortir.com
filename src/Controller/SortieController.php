@@ -373,4 +373,19 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
+    #[Route('/date', name: 'app_search_date',methods: 'post')]
+    #[IsGranted('ROLE_USER')]
+    public function date(Request $request ,SortieRepository $sortieRepository,SiteRepository $siteRepository): Response
+    {
+//        dd($request);
+        $isAdmin = $this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $sorties = $sortieRepository->searchdate($request->get('start'),$request->get('end'), $this->getUser(), $isAdmin);
+        $sites = $siteRepository->findAll();
+
+        return $this->render('sortie/sortieList.html.twig', [
+            'sorties' => $sorties,
+            'sites' => $sites,
+        ]);
+    }
+
 }

@@ -1,22 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Reinitialisation mot de passe{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address, and we will send you a
-                link to reset your password.
-            </small>
+    <section class="dark:bg-gray-900 p-3 sm:p-5">
+
+
+        <h1 class="font-semibold text-center">Réinitialiser votre mot de passe : </h1>
+        <br>
+        <div class="px-4">
+            <div class="p-4">
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
+
+                {{ form_start(requestForm, {'attr' : {'class' : ' w-5/6 sm:w-5/6 md:w-2/3 lg:w-2/5 xl:w-2/5 2xl:w-1/3 mt-10  mx-auto p-8 border-y-4 border-blue-600 rounded-lg shadow-md'}}) }}
+                {{ form_row(requestForm.email) }}
+
+                <small>
+                    Entrez votre adresse mail, un lien de réinitialisation vous sera envoyé
+                </small>
+
+                <button class="block py-2.5 px-0 mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
+                     font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    Confirmer
+                </button>
+                {{ form_end(requestForm) }}
+            </div>
+
         </div>
 
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </section>
+
 {% endblock %}

@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class PasswordUpdateFromProfileType extends AbstractType
 {
@@ -24,8 +25,8 @@ class PasswordUpdateFromProfileType extends AbstractType
                 'options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
-                        'class' => 'block py-2.5 px-0  text-sm text-gray-900 bg-white border-0 border-b-2 
-                    border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:ring-0 focus:border-blue-600 peer'
+                        'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2
+                         border-gray-600 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                     ],
                 ],
                 'first_options' => [
@@ -39,13 +40,17 @@ class PasswordUpdateFromProfileType extends AbstractType
                             // max length allowed by Symfony for security reasons
                             'max' => 4096,
                         ]),
+                        new Regex([
+                            'pattern' => '"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"',
+                            'message' =>'Minimum huit caractères, au moins une lettre majuscule, une lettre minuscule et un chiffre'
+                        ])
                     ],
                     'label' => 'Nouveau mot de passe :',
                 ],
                 'second_options' => [
                     'label' => 'Confirmer votre mot de passe : ',
                 ],
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,

@@ -8,6 +8,7 @@ parameters:
     timezone: '%env(APP_TIMEZONE)%'
     poster_dir: 'assets/img/'
     avatar: 'defaultAvatar.svg'
+    censurator_file: '%kernel.project_dir%/data/badWords.txt'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -41,5 +42,8 @@ services:
             $em: '@doctrine.orm.default_entity_manager'
             $participantRepository: '@App\Repository\ParticipantRepository'
 
+    App\DataFixtures\AppFixtures:
+        arguments:
+            $userPasswordHasher: '@Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

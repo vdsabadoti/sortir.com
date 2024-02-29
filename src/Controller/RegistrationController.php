@@ -75,23 +75,35 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
+
             if ($form->get('fichierExcel')->getData() instanceof UploadedFile) {
 
-                $fichierExcel = $form->get('fichierExcel')->getData();
+                try {
 
-                $users = $registrationService->readUserFromExcel($fichierExcel);
+                    $fichierExcel = $form->get('fichierExcel')->getData();
 
-                foreach ($users as $user) {
-                    $entityManager->persist($user);
+                    //dd($fichierExcel);
+                    
+                    $users = $registrationService->readUserFromExcel($fichierExcel);
+
+                    foreach ($users as $user) {
+                        $entityManager->persist($user);
+                    }
+
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Création des utilisateurs réussie');
+                }
+                catch (\Exception $e)
+                {
+
+                    $this->addFlash('error', 'Création des utilisateurs échouee');
                 }
 
-                $entityManager->flush();
+
 
             }
         }
-
-
-
 
         return $this->render('registration/register-by-excel.html.twig', [
                 'form' => $form

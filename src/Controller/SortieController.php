@@ -43,11 +43,8 @@ class SortieController extends AbstractController
         if(isset($request->get('sortie')['AjouterLieu']) || isset($request->get('sortie')['SelectionnerLieuxDisponibles']) )
         {
 
-
-            $form->clearErrors();
-
             return $this->render('sortie/creer.html.twig', [
-                'form' => $form
+                'form' => $form->clearErrors(true)
             ]);
         }
 
@@ -86,12 +83,13 @@ class SortieController extends AbstractController
                 $em->rollBack();
                 //var_dump($sortie);
                 var_dump($e->getMessage());
-                //dd($e->getMessage());
+                $this->addFlash('error', 'Création de la sortie échouée');
                 return $this->render('sortie/creer.html.twig', [
                     'form' => $form
                 ]);
             }
 
+            $this->addFlash('success', 'Création de la sortie réussie');
             return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
         }
 
@@ -124,10 +122,8 @@ class SortieController extends AbstractController
 
                 $form->handleRequest($request);
 
-                $form->clearErrors();
-
                 return $this->render('sortie/creer.html.twig', [
-                    'form' => $form
+                    'form' => $form->clearErrors(true)
                 ]);
             }
 
@@ -173,13 +169,13 @@ class SortieController extends AbstractController
                     $em->commit();
                 } catch (\Exception $e) {
                     $em->rollBack();
-                    var_dump($e->getMessage());
+                    $this->addFlash('error', 'Modification de la sortie échouée');
                     return $this->render('sortie/update.html.twig', [
                         'form' => $form
                     ]);
                 }
 
-                $this->addFlash('success', 'Modification effectuée');
+                $this->addFlash('success', 'Modification de la sortie effectuée');
                 return $this->redirectToRoute('app_sorties_par_sites', ['site' => $this->getUser()->getSite()->getNom()]);
             }
 

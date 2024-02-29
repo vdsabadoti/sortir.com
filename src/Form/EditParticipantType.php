@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class EditParticipantType extends AbstractType
 {
@@ -54,7 +55,11 @@ class EditParticipantType extends AbstractType
                 'attr' => [
                     'class' => 'block py-2.5 px-0 w-full text-sm text-gray-900 bg-white border-0 border-b-2 
                     border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
-                ]
+                ],
+                'constraints' => array(new Regex(
+                    array('pattern' => '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$/',
+                        'message' => 'Le numéro n\'est pas valide')
+                ))
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,

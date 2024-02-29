@@ -3,17 +3,17 @@
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
 
-    <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+    <section class="dark:bg-gray-900 p-3 sm:p-5">
 
-        <div class="mx-auto px-4 lg:px-12">
+        <div class="px-4">
 
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="p-4">
 
-                {{ form_start(resetForm) }}
+                {{ form_start(resetForm, {'attr' : {'class' : ' w-5/6 sm:w-5/6 md:w-2/3 lg:w-2/5 xl:w-2/5 2xl:w-1/3 mt-10  mx-auto p-8 border-y-4 border-blue-600 rounded-lg shadow-md'}}) }}
                 {{ form_row(resetForm.plainPassword) }}
-                <button class="btn btn-primary">Reset password</button>
+                <button class="block py-2.5 px-0 mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
+                     font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Valider</button>
                 {{ form_end(resetForm) }}
 
             </div>

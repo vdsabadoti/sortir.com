@@ -98,7 +98,7 @@ class RegistrationFormType extends AbstractType
                         ]),
                         new Regex([
                             'pattern' => '"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"',
-                            'message' =>'Minimum huit caractères, au moins une lettre majuscule, une lettre minuscule et un chiffre'
+                            'message' =>'Minimum huit caractères, au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial'
                         ])
                     ]
 

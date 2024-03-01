@@ -21,7 +21,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Sender $sender, SluggerInterface $slugger, Censurator $censurator): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Sender $sender, SluggerInterface $slugger): Response
     {
         $user = new Participant();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -31,8 +31,6 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setNom($censurator->purify($user->getNom()));
-            $user->setPrenom($censurator->purify($user->getPrenom()));
 
             $user->setActif(false);
             $user->setPassword(

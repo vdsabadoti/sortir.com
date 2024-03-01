@@ -115,8 +115,8 @@
                         {% for sortie in sorties|sort((a, b) => a.dateHeureDebut <=> b.dateHeureDebut)|sort((a, b) => a.etat <=> b.etat) %}
                             <tr class="border-b dark:border-gray-700">
                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ sortie.nom }}</th>
-                                <td class="px-4 py-3">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
-                                <td class="px-4 py-3">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
+                                <td class="px-4 py-3">{{ sortie.dateHeureDebut|date('d/m/Y') }}</td>
+                                <td class="px-4 py-3">{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
                                 <td class="px-4 py-3">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
 
                                 <td class="px-4 py-3">

@@ -26,11 +26,12 @@ class LieuService
     {
         $query = str_replace(' ', '+', $lieu->getRue());
 
-        $result = $this->httpClient->request('GET', 'https://api-adresse.data.gouv.fr/search/?q='.$query.'&limit=1'/*, [
+        $result = $this->httpClient->request('GET', 'https://api-adresse.data.gouv.fr/search/?q='.$query.'&limit=1', [
             'query' => [
-                'q' => 'uen adresse en toutes lettres',
+                'q' => $lieu->getRue(),
+                'postcode' => $lieu->getVille()->getCodePostal()
             ],
-        ]*/);
+        ]);
 
         $decodedData = json_decode($result->getContent());
 
